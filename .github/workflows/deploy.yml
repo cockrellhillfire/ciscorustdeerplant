@@ -1,0 +1,55 @@
+# Builds the Astro site and deploys it to Cloudflare Pages with Wrangler.
+# Uses repository secrets only (no Cloudflare GitHub app), so it keeps working
+# after the repo is transferred to another GitHub account. See DEPLOY.md.
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # Cache optimized images between runs so builds stay fast.
+      - uses: actions/cache@v4
+        with:
+          path: node_modules/.astro
+          key: astro-assets-${{ hashFiles('src/assets/**') }}
+          restore-keys: astro-assets-
+
+      - name: Check and build
+        run: npm run build
+
+      - name: Deploy
+        # Pull requests get a preview URL; pushes to main go live.
+        if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: >
+          npx wrangler pages deploy dist
+          --project-name=ciscorustdeerplant
+          --branch=${{ github.head_ref || github.ref_name }}
+          --commit-hash=${{ github.sha }}
