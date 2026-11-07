@@ -1,0 +1,13 @@
+{
+  "name": "Rust Deer Plant",
+  "short_name": "Rust Deer Plant",
+  "description": "Deer and wild game processing in Cisco, Texas.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#12100e",
+  "theme_color": "#12100e",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

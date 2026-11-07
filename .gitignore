@@ -1,0 +1,26 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# raw Facebook export (photos, zips, notes). Selected photos live in src/assets/gallery.
+facebook-export/
+
+# local env and Cloudflare dev files
+.env
+.env.*
+.dev.vars
+.wrangler/
+
+# logs and OS junk
+npm-debug.log*
+.DS_Store
+Thumbs.db
+desktop.ini
+lighthouse/
+
+# Claude Code local files and the original build prompt
+.claude/
+CLAUDE-CODE-PROMPT.md

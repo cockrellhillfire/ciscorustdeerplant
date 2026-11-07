@@ -1,0 +1,195 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Rust Deer Plant design tokens
+   Built from the shop's own flyers: black and charcoal, blaze orange,
+   cream/bone, and a warm brown. Orange text on light backgrounds uses
+   the darker "rust" so it passes WCAG AA contrast.
+------------------------------------------------------------------- */
+@theme {
+  --color-ink: #12100e;
+  --color-char: #1c1916;
+  --color-char-2: #27231f;
+  --color-char-3: #36302a;
+  --color-blaze: #f26b1d;
+  --color-blaze-hot: #ff7d2e;
+  --color-rust: #a3401a;
+  --color-rust-deep: #7e3014;
+  --color-cream: #f4ede0;
+  --color-bone: #e7dcc8;
+  --color-sand: #cdbfa6;
+  --color-brown: #6b4a2f;
+  --color-brown-light: #93704f;
+  --color-muted: #b9ad9b;
+
+  --font-display: var(--font-anton);
+  --font-sans: var(--font-barlow);
+  --font-cond: var(--font-barlow-condensed);
+  --font-script: var(--font-kaushan);
+
+  --tracking-label: 0.14em;
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 18px 40px -24px rgb(0 0 0 / 0.75);
+
+  --animate-rise: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
+  body {
+    @apply bg-ink text-cream font-sans antialiased;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  a { text-underline-offset: 0.18em; }
+  :focus-visible {
+    outline: 3px solid var(--color-blaze);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .on-light :focus-visible { outline-color: var(--color-rust-deep); }
+  ::selection { background: var(--color-blaze); color: var(--color-ink); }
+}
+
+@layer components {
+  /* Paper grain: tiny inline SVG noise, layered on dark sections. */
+  .grain { position: relative; isolation: isolate; }
+  .grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.09;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .93 0 0 0 0 .85 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .grain-light::before {
+    opacity: 0.22;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .29 0 0 0 0 .18 0 0 0 .35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Distressed edge for banners and section dividers, like the flyers. */
+  .torn-bottom {
+    -webkit-mask: url('/textures/torn-edge.svg') bottom / 100% 22px no-repeat, linear-gradient(#000 0 0) top / 100% calc(100% - 21px) no-repeat;
+    mask: url('/textures/torn-edge.svg') bottom / 100% 22px no-repeat, linear-gradient(#000 0 0) top / 100% calc(100% - 21px) no-repeat;
+  }
+  .rough-text {
+    -webkit-mask-image: url('/textures/grunge.svg');
+    mask-image: url('/textures/grunge.svg');
+    -webkit-mask-size: 420px;
+    mask-size: 420px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-cond);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    font-size: 0.875rem;
+    color: var(--color-blaze);
+  }
+  .on-light .eyebrow { color: var(--color-rust); }
+
+  .script {
+    font-family: var(--font-script);
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.1;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    min-height: 3rem;
+    padding: 0.7rem 1.35rem;
+    font-family: var(--font-cond);
+    font-weight: 700;
+    font-size: 1.125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1;
+    border-radius: 3px;
+    border: 2px solid transparent;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn svg { width: 1.15em; height: 1.15em; flex: none; }
+  .btn-primary { background: var(--color-blaze); color: var(--color-ink); }
+  .btn-primary:hover { background: var(--color-blaze-hot); }
+  .btn-ghost { border-color: rgb(244 237 224 / 0.55); color: var(--color-cream); background: rgb(18 16 14 / 0.35); }
+  .btn-ghost:hover { border-color: var(--color-cream); background: rgb(18 16 14 / 0.6); }
+  .btn-dark { background: var(--color-ink); color: var(--color-cream); }
+  .btn-dark:hover { background: var(--color-char-3); }
+
+  .section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
+  .container-x { width: 100%; max-width: 76rem; margin-inline: auto; padding-inline: 1rem; }
+  @media (min-width: 640px) { .container-x { padding-inline: 1.5rem; } }
+
+  .rule-orange {
+    height: 4px;
+    width: 4.5rem;
+    background: var(--color-blaze);
+    border-radius: 2px;
+  }
+
+  /* Price rows with dotted leaders, like the printed price guide. */
+  .price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding-block: 0.6rem;
+    border-bottom: 1px solid rgb(107 74 47 / 0.22);
+  }
+  .price-row:last-child { border-bottom: 0; }
+  .price-row .leader {
+    flex: 1;
+    min-width: 1rem;
+    border-bottom: 2px dotted rgb(107 74 47 / 0.45);
+    transform: translateY(-0.3em);
+  }
+  .price-row .amount {
+    font-family: var(--font-cond);
+    font-weight: 700;
+    font-size: 1.2rem;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .reveal { opacity: 1; }
+  .js .reveal:not(.is-visible) { opacity: 0; transform: translateY(18px); }
+  .js .reveal { transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+  .prose-rdp p + p { margin-top: 1rem; }
+  .prose-rdp a { color: inherit; text-decoration: underline; text-decoration-color: var(--color-blaze); text-decoration-thickness: 2px; }
+  .on-light .prose-rdp a { text-decoration-color: var(--color-rust); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .js .reveal:not(.is-visible) { opacity: 1; transform: none; }
+  .btn:hover { transform: none; }
+}

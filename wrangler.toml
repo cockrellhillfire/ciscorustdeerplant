@@ -1,0 +1,10 @@
+# Cloudflare Pages project config. Deploys run from GitHub Actions (see .github/workflows/deploy.yml and DEPLOY.md).
+name = "ciscorustdeerplant"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-11-01"
+
+# Non-secret settings for the contact form function (functions/api/contact.ts).
+# Set RESEND_API_KEY as an encrypted secret in the Cloudflare dashboard, never here.
+[vars]
+CONTACT_TO = "contact@ciscorustdeerplant.com"
+CONTACT_FROM = "Rust Deer Plant Website <website@ciscorustdeerplant.com>"

@@ -1,0 +1,293 @@
+{
+  "_readme": "Edit this file to change what the website says. Keep the quotes and commas exactly as they are. Anything marked TODO still needs an answer from the owners; search this file for TODO. See README.md for step-by-step help.",
+
+  "name": "Rust Deer Plant",
+  "subtitle": "Wild Game Processing",
+  "tagline": "Some Like It Wild",
+  "hashtag": "#somelikeitwild",
+  "intro": "Wild game processing shop in Cisco, Texas. Since 2021, we've treated every hunter's harvest with the same care we give our own. We specialize in smoked meats and offer European mounts. Proudly family-owned and local, we're made for those who like it wild!",
+  "owners": "Dustin and Leta Ferguson",
+  "ownedSince": 2021,
+  "plantHistory": "The plant has served Cisco and the Big Country for over 35 years. Dustin and Leta Ferguson have run it as a family business since 2021.",
+  "siteUrl": "https://ciscorustdeerplant.com",
+
+  "phone": {
+    "display": "(254) 442-1653",
+    "tel": "+12544421653",
+    "label": "Plant"
+  },
+  "phoneAlt": {
+    "display": "(254) 701-8822",
+    "tel": "+12547018822",
+    "label": "Second line"
+  },
+  "email": "rustdeerplant@yahoo.com",
+
+  "address": {
+    "street": "8913 Highway 6",
+    "city": "Cisco",
+    "state": "TX",
+    "zip": "76437",
+    "county": "Eastland County",
+    "note": "About four miles east of downtown Cisco on Highway 6. The meat plant next door at 8911 Highway 6 is a different business."
+  },
+  "geo": {
+    "lat": 32.3897,
+    "lng": -98.9093,
+    "_note": "TODO: confirm. From the US Census geocoder for 8913 State Hwy 6. Drop a pin on Google Maps at the front gate and paste the numbers here if it is off."
+  },
+  "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Rust+Deer+Plant+8913+Highway+6+Cisco+TX+76437",
+  "directionsUrl": "https://www.google.com/maps/dir/?api=1&destination=Rust+Deer+Plant+8913+Highway+6+Cisco+TX+76437",
+  "mapEmbedUrl": "https://www.google.com/maps?q=Rust+Deer+Plant,+8913+Highway+6,+Cisco,+TX+76437&output=embed",
+
+  "social": {
+    "facebook": "https://www.facebook.com/rustdeerplant",
+    "instagram": "https://www.instagram.com/rustdeerplant",
+    "tiktok": "https://www.tiktok.com/@rustdeerplant"
+  },
+  "reviewSummary": "98% recommend on Facebook (38 reviews)",
+
+  "season": {
+    "_help": "Change 'status' to open, closing or closed. The banner at the top of every page uses 'banner' for the current status.",
+    "status": "open",
+    "label": "2026–27 season",
+    "months": "October through January",
+    "lastPickupDate": "TODO",
+    "banner": {
+      "open": "Rifle season is open. We're taking deer, hogs and exotics 9 AM to 9 PM, seven days a week.",
+      "closing": "Pickup-only weeks are here. Grab your meat and euros before the last pickup date.",
+      "closed": "We're closed for the off-season. See you in October! Follow us on Facebook for opening dates."
+    }
+  },
+
+  "hours": {
+    "summary": "9 AM to 9 PM, seven days a week",
+    "seasonNote": "Open October through January.",
+    "days": [
+      { "day": "Monday", "open": "09:00", "close": "21:00" },
+      { "day": "Tuesday", "open": "09:00", "close": "21:00" },
+      { "day": "Wednesday", "open": "09:00", "close": "21:00" },
+      { "day": "Thursday", "open": "09:00", "close": "21:00" },
+      { "day": "Friday", "open": "09:00", "close": "21:00" },
+      { "day": "Saturday", "open": "09:00", "close": "21:00" },
+      { "day": "Sunday", "open": "09:00", "close": "21:00" }
+    ],
+    "seasonStart": "10-01",
+    "seasonEnd": "01-31",
+    "holidayClosures": ["Thanksgiving Day", "Christmas Eve", "Christmas Day"],
+    "holidayNote": "On holiday closures the back-deck drop-off stays open. Instructions are posted on the deck.",
+    "offSeason": "Closed February through September. Pickup-only hours at the end of the season are posted on Facebook."
+  },
+
+  "dropOff": {
+    "where": "Harvest drop-off in the back at the deck",
+    "afterHours": [
+      "After 9 PM or on a holiday, use the drop-off system on the back deck.",
+      "Write your name and phone number on one of the tags we provide and wire it to your animal.",
+      "The outdoor cameras let us know you're here, and someone will get your animal into the cooler.",
+      "We'll call you the next business day to go over your cut ticket and take your deposit."
+    ],
+    "gutsFeeAfterHours": 100,
+    "gutsFeeAfterHoursNote": "An extra $100 is charged for any animal left after hours with the guts still in. Field dress it first, or bring it during business hours and we'll gut it for the $75 gut fee.",
+    "bring": [
+      "Your valid Texas hunting license",
+      "Your animal, properly tagged",
+      "Your cut-ticket choices: steaks, roasts, grind and any specialty items"
+    ],
+    "tpwdLinks": [
+      { "label": "Tagging Deer", "url": "https://tpwd.texas.gov/regulations/outdoor-annual/licenses/tagging-instructions/tagging-deer" },
+      { "label": "After Harvesting a Deer or Pronghorn", "url": "https://tpwd.texas.gov/regulations/outdoor-annual/hunting/general-regulations/after-killing-a-deer/" },
+      { "label": "White-tailed Deer Seasons & Regulations", "url": "https://tpwd.texas.gov/regulations/outdoor-annual/hunting/deer" }
+    ]
+  },
+
+  "payment": {
+    "policy": "Basic processing, cut fee, and any euros or cape fee are paid before you leave the drop-off. The remaining balance is due at pick-up.",
+    "methods": ["Cash (preferred)", "Credit and debit cards", "Checks"],
+    "cashNote": "Cash is king. Every dollar paid in cash stays with a small, local business."
+  },
+
+  "pickup": {
+    "freezerFreeDays": 14,
+    "freezerFeePerDay": 5,
+    "freezerNote": "Once we call or text that your order is ready, you have 14 days to pick it up. After that, freezer rent is $5.00 a day.",
+    "donationNote": "Anything not picked up by the last pickup date of the season is donated."
+  },
+
+  "discounts": [
+    { "title": "Military and first responders", "text": "20% off Basic Processing. Just let us know when you drop off. Thank you for your service." }
+  ],
+
+  "firstHarvest": {
+    "title": "First Harvest Club",
+    "text": "Bring us your first deer and we'll hook you up with a free Rust Deer Plant t-shirt (or a cap or koozie while supplies last) and a picture for our Facebook page. Just tell us it's your first!"
+  },
+
+  "pricing": {
+    "_help": "Prices are in dollars. Change the number to change the price on the site. 'perLb': true shows '/lb' after the price.",
+    "updated": "2026 season",
+    "disclaimer": "Prices can change. Please call (254) 442-1653 to confirm before you bring in your harvest.",
+    "basicProcessing": {
+      "title": "Basic Processing",
+      "includes": "Basic processing on any animal includes steaks and roasts cut, plus burger and chili ground.",
+      "items": [
+        { "item": "Whitetail", "price": 125 },
+        { "item": "Quartered Deer", "price": 100 },
+        { "item": "Mule Deer", "price": 140 },
+        { "item": "Quartered Mule", "price": 115 },
+        { "item": "Elk", "price": 350 },
+        { "item": "Quartered Elk", "price": 225 },
+        { "item": "Fallow/Axis", "price": 175 }
+      ]
+    },
+    "hogProcessing": {
+      "title": "Hog Processing",
+      "items": [
+        { "item": "Up to 125 lbs", "price": 120 },
+        { "item": "150+ lbs", "price": 170 }
+      ]
+    },
+    "feesAndEuros": {
+      "title": "Fees & Euros",
+      "items": [
+        { "item": "Gut Fee", "price": 75 },
+        { "item": "Cape Fee", "price": 45 },
+        { "item": "Large Cape Fee", "price": 60 },
+        { "item": "European Mount", "price": 125 },
+        { "item": "Rush Order", "price": null, "note": "Ask for pricing" },
+        { "item": "Left after hours with guts in", "price": 100 }
+      ]
+    },
+    "cutOptions": {
+      "title": "Cut Options",
+      "cuts": [
+        { "cut": "Backstrap", "options": ["Whole", "Steaks", "Tenderized", "Bacon-wrapped", "Butterflied"] },
+        { "cut": "Tenderloins", "options": ["Whole", "Steaks", "Tenderized", "Bacon-wrapped"] },
+        { "cut": "Round", "options": ["Roast", "Steaks", "Tenderized"] }
+      ],
+      "upcharges": [
+        { "item": "Round steaks", "price": 10 },
+        { "item": "Tenderizing", "price": 10 }
+      ],
+      "grind": ["Burger", "Chili", "Cheese", "Jalapeños"],
+      "grindNote": "Extra fat available."
+    },
+    "hogCuts": {
+      "title": "Hog Cuts",
+      "options": ["Ham steak", "Boneless pork chop", "Boneless ham", "Pork grind"],
+      "items": [
+        { "item": "Breakfast Sausage (regular or hot)", "price": 4.0, "perLb": true },
+        { "item": "Chorizo", "price": 6.0, "perLb": true }
+      ]
+    },
+    "linkSausage": {
+      "title": "Link Sausage",
+      "items": [
+        { "item": "Jalapeño Cheese", "price": 5.5, "perLb": true },
+        { "item": "Smokey Cheddar", "price": 5.25, "perLb": true },
+        { "item": "German", "price": 5.0, "perLb": true },
+        { "item": "Honey Chipotle", "price": 5.0, "perLb": true },
+        { "item": "Hot Link", "price": 5.0, "perLb": true }
+      ]
+    },
+    "summerSausage": {
+      "title": "Summer Sausage",
+      "items": [
+        { "item": "Regular", "price": 5.0, "perLb": true },
+        { "item": "Paw's Jalapeño Cheese", "price": 5.5, "perLb": true }
+      ]
+    },
+    "moreSpecialties": {
+      "title": "More Specialties",
+      "items": [
+        { "item": "Jerky (Black Pepper or Honey Chipotle)", "price": 15.0, "perLb": true },
+        { "item": "Snack Sticks (Some Like It Hot or Rack Snacks)", "price": 12.0, "perLb": true, "badge": "New" },
+        { "item": "Stew Meat", "price": 4.0, "perLb": true, "note": "5 lb minimum" },
+        { "item": "Seasoned Fajita Meat", "price": 8.0, "perLb": true },
+        { "item": "Bacon-wrapped Backstrap", "price": 10.0, "perLb": true }
+      ]
+    },
+    "minimum": "6 lb minimum on all sausage"
+  },
+
+  "flavors": {
+    "_help": "These show on the home page and Services page. Add or remove flavors here.",
+    "linkSausage": [
+      { "name": "Jalapeño Cheese", "description": "Big chunks of cheese and jalapeño. It's got it all going on." },
+      { "name": "Honey Chipotle", "description": "A little sass up front, then just a hint of sweetness. Pork or venison." },
+      { "name": "Smokey Cheddar", "description": "Smoky and cheesy with no heat." },
+      { "name": "German", "description": "A classic mild link." },
+      { "name": "Hot Link", "description": "The 2025 flavor-poll winner. Bring the heat." }
+    ],
+    "summerSausage": [
+      { "name": "Paw's Jalapeño Cheese", "description": "Named after Paw, a family favorite. Look at that cheese." },
+      { "name": "Regular", "description": "The camp-cooler classic." }
+    ],
+    "jerky": [
+      { "name": "Black Pepper", "description": "Our regular, mouthwatering jerky." },
+      { "name": "Honey Chipotle", "description": "Sweet 'n' tangy with some smoke. Hunters can't get enough." }
+    ],
+    "snackSticks": [
+      { "name": "Some Like It Hot", "description": "Like a little heat? This one's for you." },
+      { "name": "Rack Snacks", "description": "Heat not your thing? Try these." }
+    ],
+    "note": "All our specialty sausage comes fully cooked and smoked. Simply thaw and eat."
+  },
+
+  "saturdaySales": {
+    "show": true,
+    "text": "During the season, we sell specialty sausages, jerky and snack sticks on Saturdays only, until we run out. Watch Facebook for dates."
+  },
+
+  "merch": {
+    "show": true,
+    "text": "Stop inside the shop for Rust Deer Plant gear.",
+    "items": [
+      { "item": "Leather-patch caps", "price": 25 },
+      { "item": "T-shirts", "price": null, "_todo": "TODO: price" },
+      { "item": "Hoodies", "price": null, "_todo": "TODO: price" },
+      { "item": "Koozies", "price": null, "_todo": "TODO: price" },
+      { "item": "Tumblers", "price": null, "_todo": "TODO: price" },
+      { "item": "Decals and keychains", "price": null, "_todo": "TODO: price" }
+    ]
+  },
+
+  "services": [
+    { "title": "Deer Processing", "text": "Whitetail and mule deer, whole or quartered. Steaks, roasts, burger and chili, cut the way you want.", "href": "/services/#basic-processing" },
+    { "title": "Hogs & Exotics", "text": "Hogs, elk, axis, fallow, red stag, aoudad, oryx and bison. If you can hunt it in Texas, bring it to the deck.", "href": "/services/#hog-processing" },
+    { "title": "Smoked Specialties", "text": "Link and summer sausage, jerky, snack sticks and more, smoked here and made from your own harvest.", "href": "/services/#link-sausage" },
+    { "title": "European Mounts", "text": "Euros of all kinds, cleaned and whitened in-house. Something to hang on the wall while the freezer fills up.", "href": "/services/#fees-and-euros" }
+  ],
+
+  "faq": [
+    { "q": "What comes with basic processing?", "a": "Basic processing on any animal includes steaks and roasts cut, plus burger and chili ground. Cut options like tenderizing, round steaks and specialty sausage are added on your cut ticket." },
+    { "q": "When are you open?", "a": "During the season (October through January) we're open 9 AM to 9 PM, seven days a week. We close on Thanksgiving Day, Christmas Eve and Christmas Day, but the back-deck drop-off stays open." },
+    { "q": "Can I drop off after hours?", "a": "Yes. Use the drop-off on the back deck: tag your animal with your name and phone number, and we'll call you the next business day for your cut ticket. Animals left after hours with the guts in are charged an extra $100." },
+    { "q": "What do I pay at drop-off?", "a": "Basic processing, your cut fee, and any euro or cape fee are paid before you leave. The rest is due at pick-up. We take cash (preferred), cards and checks." },
+    { "q": "How long do I have to pick up?", "a": "You have 14 days from the day we call or text that your order is ready. After that, freezer rent is $5.00 a day. Anything left after the last pickup date of the season is donated." },
+    { "q": "Is there a minimum on sausage?", "a": "Yes. There's a 6 lb minimum on all sausage." },
+    { "q": "Do you offer a military discount?", "a": "Yes. Military and first responders get 20% off Basic Processing." },
+    { "q": "Do you take hogs and exotics?", "a": "Yes, all season long. We process hogs, elk, axis, fallow, red stag, aoudad, oryx, bison and more." }
+  ],
+
+  "reviews": [
+    { "name": "Wesley D.", "text": "Been taking deer here for several years now and always turn out a great product. Can't say enough! Love the sausage combos they have to choose from. That chipotle jack is where it's at!" },
+    { "name": "Cristen C.", "text": "Rust Deer Plant has ONLY the best people!! You can see the excitement on their face when you pull up with something in the back of the truck to be processed! Everyone there makes you feel like family, they're kind-hearted and they genuinely care about their customers!" },
+    { "name": "Ashton D.", "text": "One of the cleanest nicest places to have an animal processed! Everything was nicely packaged and boxed for pick up! Delicious, very happy with services!" },
+    { "name": "Dustin C.", "text": "Rust Deer Plant is one of the best in the business. We've taken 6 deer and a hog and will be back this 25/26 hunting season." },
+    { "name": "Jason J.", "text": "Great staff, hard working people that love the sport of hunting as well as makin' sure your order is done the way you like." },
+    { "name": "Travis R.", "text": "Fast, quality and friendly. All great reasons to use Rust." },
+    { "name": "Bella L.", "text": "Great family and great service. We get our meat back super fast. Thank you all for what you do." },
+    { "name": "Stephen A.", "text": "Good people, good service, good quality. Can't beat that!!! Rust Deer Plant is the Best." },
+    { "name": "Adams B.", "text": "Great place and down home friendly folks." }
+  ],
+
+  "serviceArea": ["Cisco", "Eastland", "Abilene", "Albany", "Baird", "Breckenridge", "Clyde", "Brownwood", "Coleman", "Ballinger", "Anson"],
+
+  "officialNotice": "This is the official website of Rust Deer Plant. We are not affiliated with any other site using our name, or with the plant next door at 8911 Highway 6.",
+
+  "contactForm": {
+    "_note": "The form sends to the address set in the CONTACT_TO environment variable on Cloudflare (contact@ciscorustdeerplant.com). See DEPLOY.md.",
+    "intro": "Questions about a cut ticket, pricing or pickup? Send us a note. During the season the fastest answer is a phone call."
+  }
+}
