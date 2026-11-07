@@ -4,110 +4,130 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import Icon from '../components/Icon.astro';
 import AntlerMark from '../components/AntlerMark.astro';
-import Reviews from '../components/Reviews.astro';
 import { biz, photo } from '../lib/business';
 
-const crew = photo('crew-with-bison-quarter.jpg');
-const table = photo('crew-with-bison-side.jpg');
-const smoker = photo('pitmaster-at-the-smoker.jpg');
-const youth = photo('father-and-son-whitetail.jpg');
+const collage = [photo('crew-with-bison-quarter.jpg'), photo('pitmaster-at-the-smoker.jpg'), photo('father-and-son-whitetail.jpg')];
+const crew = photo('full-crew.jpg');
+const stats = [
+  { big: '35+', small: 'years serving Cisco hunters' },
+  { big: String(biz.ownedSince), small: 'the Fergusons took over' },
+  { big: '98%', small: 'recommend us on Facebook' },
+  { big: '7', small: 'days a week in season' },
+];
 const values = [
-  { icon: 'shield', title: 'Your harvest, our care', text: "Every animal that hits the deck gets treated like it's going in our own freezer." },
-  { icon: 'flame', title: 'Smoked right here', text: 'Sausage, jerky and snack sticks are made and smoked at the plant, from your own harvest.' },
-  { icon: 'snowflake', title: 'Clean & fast', text: 'Hunters tell us it again and again: clean facility, quick turnaround, and everything packaged and boxed for pickup.' },
-  { icon: 'star', title: 'Family on the deck', text: "The Fergusons and a hometown crew, many of them local students, run the plant every season." },
-] as const;
+  { title: 'Your harvest, our care', text: "Every animal that hits the deck gets treated like it's going in our own freezer." },
+  { title: 'Smoked right here', text: 'Sausage, jerky and snack sticks are made and smoked at the plant, from your own harvest.' },
+  { title: 'Clean & fast', text: 'Hunters tell us again and again: clean facility, quick turnaround, everything packaged and boxed for pickup.' },
+  { title: 'Family on the deck', text: 'The Fergusons and a hometown crew, many of them local students, run the plant every season.' },
+];
 ---
 
 <BaseLayout
-  title="About Us"
+  title="Our Story"
   description="Rust Deer Plant has served Cisco, Texas for over 35 years. Since 2021, Dustin and Leta Ferguson have run it as a family-owned wild game processor specializing in smoked meats and European mounts."
 >
   <PageHero
     eyebrow="Family-owned in Cisco, Texas"
     title="Made for those who like it wild"
-    lead="A wild game plant with deep roots in Cisco, run by a family that loves hunting season as much as you do."
-    photo={table}
+    photo={photo('crew-with-bison-side.jpg')}
     position="50% 45%"
+    next="ink"
   />
 
+  <!-- Stats band -->
+  <section class="bg-ink pb-4" aria-label="By the numbers">
+    <ul class="container-x grid grid-cols-2 md:grid-cols-4">
+      {
+        stats.map((s) => (
+          <li class="reveal border-white/10 px-4 py-8 text-center odd:border-r md:border-r md:last:border-r-0">
+            <span class="block font-display text-6xl text-blaze sm:text-7xl">{s.big}</span>
+            <span class="mt-1 block font-cond text-sm font-bold uppercase tracking-[0.14em] text-bone">{s.small}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Story -->
   <section class="on-light grain grain-light section bg-cream text-ink" aria-labelledby="story-title">
-    <div class="container-x grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-center">
-      <div class="reveal">
-        <p class="eyebrow">Our story</p>
-        <h2 id="story-title" class="mt-3 text-5xl sm:text-6xl">35+ years on Highway 6</h2>
-        <div class="prose-rdp mt-6 text-lg text-ink/90">
-          <p>
-            Rust Deer Plant has been processing deer for Cisco and the Big Country for more than 35 years. Generations of local hunters have pulled up to this deck with something in the back of the truck.
-          </p>
-          <p>
-            In 2021, <strong>{biz.owners}</strong> took over the plant and made it a family business. Here's how they put it:
-          </p>
-          <blockquote class="my-6 border-l-4 border-rust bg-bone/70 px-5 py-4 text-xl italic text-ink">
-            “{biz.intro}”
-          </blockquote>
-          <p>
-            Today the plant processes whitetail and mule deer, hogs, elk and exotics from all over the region. We smoke our own specialty sausage, jerky and snack sticks, and we turn out European mounts of all kinds. Opening weekend is a family affair, with food for hunters, sausage samples, and the whole crew on the deck.
-          </p>
-        </div>
+    <div class="container-x max-w-3xl text-center">
+      <p class="ruled eyebrow reveal">Our story</p>
+      <h2 id="story-title" class="reveal mt-3 text-6xl sm:text-7xl">35+ years on Highway 6</h2>
+      <div class="prose-rdp reveal mt-8 text-left text-lg sm:text-xl">
+        <p>
+          <span class="float-left mr-3 mt-1 font-display text-7xl leading-[0.8] text-rust">R</span>ust Deer Plant has been processing deer for Cisco and the Big Country for more than 35 years. Generations of local hunters have pulled up to this deck with something in the back of the truck.
+        </p>
+        <p>In 2021, <strong>{biz.owners}</strong> took over the plant and made it a family business. Here's how they put it:</p>
       </div>
-      <div class="reveal relative">
-        <Picture src={crew.src} alt={crew.alt} formats={['avif', 'webp']} widths={[480, 720, 960]} sizes="(min-width: 1024px) 34rem, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover shadow-xl" />
-        <AntlerMark class="absolute -bottom-8 -left-6 h-24 w-24 text-rust" />
+    </div>
+
+    <figure class="reveal container-x mt-10 max-w-4xl">
+      <div class="relative bg-ink px-6 py-10 text-center text-cream sm:px-14">
+        <AntlerMark class="absolute -top-7 left-1/2 h-14 w-14 -translate-x-1/2 rounded-full bg-cream p-2 text-rust" />
+        <blockquote class="font-display text-3xl uppercase leading-[1.1] sm:text-4xl">
+          <p>“{biz.intro}”</p>
+        </blockquote>
+        <figcaption class="script mt-5 text-3xl text-blaze">The Ferguson family</figcaption>
       </div>
+    </figure>
+
+    <div class="container-x mt-10 max-w-3xl">
+      <div class="prose-rdp reveal text-lg sm:text-xl">
+        <p>
+          Today the plant processes whitetail and mule deer, hogs, elk and exotics from all over the region. We smoke our own specialty sausage, jerky and snack sticks, and we turn out European mounts of all kinds. Opening weekend is a family affair, with food for hunters, sausage samples, and the whole crew on the deck.
+        </p>
+      </div>
+    </div>
+
+    <div class="container-x mt-14 grid max-w-5xl grid-cols-3 items-center gap-3 sm:gap-8">
+      {
+        collage.map((c, i) => (
+          <figure class:list={['taped reveal', i === 0 ? 'tilt-l' : i === 1 ? 'tilt-r2 z-10 scale-105' : 'tilt-r']}>
+            <Picture src={c.src} alt={c.alt} formats={['avif', 'webp']} widths={[240, 400, 560]} sizes="(min-width: 1024px) 20rem, 32vw" class="aspect-[4/5] w-full object-cover" />
+          </figure>
+        ))
+      }
     </div>
   </section>
 
-  <section class="grain section bg-char" aria-labelledby="values-title">
-    <div class="container-x">
-      <div class="reveal max-w-2xl">
-        <p class="eyebrow">How we do it</p>
-        <h2 id="values-title" class="mt-3 text-5xl text-cream sm:text-6xl">What you can count on</h2>
+  <!-- Values as a numbered list over the crew photo -->
+  <section class="relative isolate overflow-hidden bg-ink" aria-labelledby="values-title">
+    <Picture src={crew.src} alt={crew.alt} formats={['avif', 'webp']} widths={[640, 1080, 1440]} sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover opacity-25" />
+    <div class="absolute inset-0 -z-10 bg-gradient-to-b from-ink via-ink/80 to-ink" aria-hidden="true"></div>
+    <div class="container-x section max-w-4xl">
+      <div class="text-center">
+        <p class="ruled eyebrow reveal">How we do it</p>
+        <h2 id="values-title" class="reveal mt-3 text-6xl text-cream sm:text-7xl">What you can count on</h2>
       </div>
-      <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <ol class="mt-12 space-y-8">
         {
           values.map((v, i) => (
-            <li class="reveal rounded-sm border border-white/10 bg-char-2 p-6" style={`transition-delay:${i * 70}ms`}>
-              <Icon name={v.icon} class="h-8 w-8 text-blaze" />
-              <h3 class="mt-4 text-2xl text-cream">{v.title}</h3>
-              <p class="mt-2 text-bone">{v.text}</p>
+            <li class="reveal grid grid-cols-[4.5rem_1fr] items-start gap-5 border-b border-white/10 pb-8 last:border-0">
+              <span class="numeral-outline text-7xl" aria-hidden="true">{i + 1}</span>
+              <span>
+                <span class="block font-display text-4xl uppercase leading-none text-cream">{v.title}</span>
+                <span class="mt-2 block text-lg text-bone">{v.text}</span>
+              </span>
             </li>
           ))
         }
-      </ul>
+      </ol>
     </div>
   </section>
 
-  <section class="relative overflow-hidden bg-ink" aria-labelledby="tradition-title">
-    <div class="grid md:grid-cols-2">
-      <Picture src={smoker.src} alt={smoker.alt} formats={['avif', 'webp']} widths={[480, 720, 1080]} sizes="(min-width: 768px) 50vw, 100vw" class="h-full max-h-[40rem] w-full object-cover" />
-      <div class="grain section flex flex-col justify-center px-4 sm:px-10 lg:px-16">
-        <p class="eyebrow reveal">Passing it on</p>
-        <h2 id="tradition-title" class="reveal mt-3 text-5xl text-cream sm:text-6xl">The best part of the season</h2>
-        <p class="reveal mt-5 text-lg text-bone">
-          Nothing beats seeing a young hunter's face light up on the deck. Every first deer earns a spot in our <strong class="text-cream">First Harvest Club</strong>, with a free Rust shirt and a picture on our page. We love seeing families out in the woods making memories together.
-        </p>
-        <p class="reveal mt-4 text-bone">
-          We're proud to support our military, first responders and Eastland County law enforcement too. Military and first responders get 20% off Basic Processing.
-        </p>
-        <div class="reveal mt-8 flex flex-col gap-3 sm:flex-row">
-          <a href="/drop-off/" class="btn btn-primary">Drop-off guide <Icon name="arrow" /></a>
-          <a href={biz.social.facebook} rel="noopener" target="_blank" class="btn btn-ghost">Follow on Facebook<span class="sr-only"> (opens Facebook)</span></a>
-        </div>
+  <!-- Passing it on -->
+  <section class="grain section bg-char text-center" aria-labelledby="tradition-title">
+    <div class="container-x max-w-3xl">
+      <p class="ruled eyebrow reveal">Passing it on</p>
+      <h2 id="tradition-title" class="reveal mt-3 text-6xl text-cream sm:text-7xl">The best part of the season</h2>
+      <p class="reveal mt-6 text-lg text-bone">
+        Nothing beats seeing a young hunter's face light up on the deck. Every first deer earns a spot in our <strong class="text-cream">First Harvest Club</strong>, with a free Rust shirt and a picture on our page.
+      </p>
+      <p class="reveal mt-4 text-bone">We're proud to support our military, first responders and Eastland County law enforcement too. Military and first responders get 20% off Basic Processing.</p>
+      <div class="reveal mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href="/drop-off/" class="btn btn-primary">Drop-off guide <Icon name="arrow" /></a>
+        <a href={biz.social.facebook} rel="noopener" target="_blank" class="btn btn-ghost">Follow on Facebook<span class="sr-only"> (opens Facebook)</span></a>
       </div>
-    </div>
-  </section>
-
-  <section class="section bg-char" aria-labelledby="about-reviews-title">
-    <div class="container-x">
-      <div class="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-        <div>
-          <p class="eyebrow">In their words</p>
-          <h2 id="about-reviews-title" class="mt-3 text-5xl text-cream sm:text-6xl">Our hunters</h2>
-        </div>
-        <Picture src={youth.src} alt={youth.alt} formats={['avif', 'webp']} widths={[320, 480]} sizes="12rem" class="hidden h-36 w-48 rounded-sm object-cover md:block" />
-      </div>
-      <div class="mt-10"><Reviews limit={9} /></div>
     </div>
   </section>
 </BaseLayout>

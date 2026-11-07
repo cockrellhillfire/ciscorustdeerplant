@@ -31,13 +31,14 @@ const groups = await Promise.all(
     lead="A few favorites from the deck, the smokehouse and the shop. For daily photos all season long, follow us on Facebook."
     photo={photo('mount-room.jpg')}
     position="50% 50%"
+    next="ink"
   >
     <nav aria-label="Gallery sections" class="mt-8">
-      <ul class="flex flex-wrap gap-2">
+      <ul class="flex flex-wrap justify-center gap-2.5">
         {
           groups.map((g) => (
             <li>
-              <a href={`#${g.key}`} class="block rounded-full border border-white/25 bg-ink/50 px-4 py-2 font-cond text-sm font-bold uppercase tracking-[0.1em] text-cream transition hover:border-blaze hover:text-blaze">
+              <a href={`#${g.key}`} class="hang-tag block bg-cream font-cond text-sm font-bold uppercase tracking-[0.1em] text-ink transition hover:bg-blaze [--tag-hole:var(--color-ink)]">
                 {g.title}
               </a>
             </li>
@@ -54,7 +55,7 @@ const groups = await Promise.all(
           <div class="container-x">
             <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <h2 id={`${g.key}-title`} class="text-5xl text-cream">{g.title}</h2>
+                <h2 id={`${g.key}-title`} class="text-6xl text-cream">{g.title}</h2>
                 <p class="mt-2 text-bone">{g.blurb}</p>
               </div>
               <p class="font-cond text-sm font-bold uppercase tracking-[0.14em] text-muted">{g.items.length} photos</p>

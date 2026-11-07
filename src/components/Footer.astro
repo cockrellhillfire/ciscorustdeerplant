@@ -1,88 +1,76 @@
 ---
-import { biz, fullAddress } from '../lib/business';
-import Logo from './Logo.astro';
+/** Centered emblem footer, laid out like the bottom of the shop's printed price guide. */
+import { biz, formatTime } from '../lib/business';
 import Icon from './Icon.astro';
-import HoursTable from './HoursTable.astro';
 import AntlerMark from './AntlerMark.astro';
 const year = new Date().getFullYear();
 const links = [
-  { href: '/services/', label: 'Services & Pricing' },
+  { href: '/services/', label: 'Prices' },
   { href: '/drop-off/', label: 'Drop-Off Guide' },
   { href: '/gallery/', label: 'Gallery' },
-  { href: '/about/', label: 'About' },
+  { href: '/about/', label: 'Our Story' },
   { href: '/contact/', label: 'Contact' },
 ];
+const h = biz.hours.days[0];
+const closures = biz.hours.holidayClosures.join(', ').replace(/, ([^,]*)$/, ' and $1');
+const social = [
+  { href: biz.social.facebook, icon: 'facebook', label: 'Facebook' },
+  { href: biz.social.instagram, icon: 'instagram', label: 'Instagram' },
+  { href: biz.social.tiktok, icon: 'tiktok', label: 'TikTok' },
+] as const;
 ---
 
-<footer id="site-footer" class="grain relative overflow-hidden border-t-4 border-blaze bg-char pb-28 pt-16 md:pb-10">
-  <AntlerMark class="pointer-events-none absolute -right-24 -top-10 h-[30rem] w-[30rem] text-white/[0.03]" />
-  <div class="container-x relative grid gap-12 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr]">
-    <div>
-      <Logo size="lg" />
-      <p class="script mt-5 text-3xl text-blaze">{biz.tagline}</p>
-      <p class="mt-4 max-w-sm text-muted">Family-owned deer and wild game processing in Cisco, Texas. Serving hunters across Eastland County and the Big Country.</p>
-      <ul class="mt-6 flex gap-3" aria-label="Social media">
-        <li>
-          <a href={biz.social.facebook} class="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-cream transition hover:border-blaze hover:text-blaze" rel="noopener" target="_blank">
-            <Icon name="facebook" class="h-5 w-5" label="Rust Deer Plant on Facebook" />
-          </a>
-        </li>
-        <li>
-          <a href={biz.social.instagram} class="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-cream transition hover:border-blaze hover:text-blaze" rel="noopener" target="_blank">
-            <Icon name="instagram" class="h-5 w-5" label="Rust Deer Plant on Instagram" />
-          </a>
-        </li>
-        <li>
-          <a href={biz.social.tiktok} class="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-cream transition hover:border-blaze hover:text-blaze" rel="noopener" target="_blank">
-            <Icon name="tiktok" class="h-5 w-5" label="Rust Deer Plant on TikTok" />
-          </a>
-        </li>
-      </ul>
-    </div>
+<footer id="site-footer" class="grain relative overflow-hidden bg-char pb-28 pt-20 text-center md:pb-12">
+  <div class="absolute inset-x-0 top-0 h-2 bg-[repeating-linear-gradient(135deg,var(--color-blaze)_0_14px,var(--color-ink)_14px_28px)]" aria-hidden="true"></div>
+  <div class="container-x relative">
+    <AntlerMark class="mx-auto h-20 w-20 text-blaze" />
+    <p class="mt-4 font-display text-5xl uppercase leading-none text-cream sm:text-6xl">Rust Deer Plant</p>
+    <p class="ruled mt-3 font-cond text-sm font-bold uppercase tracking-[0.34em] text-sand">Wild Game Processing</p>
 
-    <div>
-      <h2 class="eyebrow">Find us</h2>
-      <address class="mt-4 not-italic">
-        <a href={biz.directionsUrl} class="group flex gap-3 text-cream hover:text-blaze" rel="noopener" target="_blank">
-          <Icon name="pin" class="mt-1 h-5 w-5 shrink-0 text-blaze" />
-          <span>{biz.address.street}<br />{biz.address.city}, {biz.address.state} {biz.address.zip}<span class="sr-only"> (opens Google Maps directions)</span></span>
+    <div class="mx-auto mt-10 max-w-3xl border-y-2 border-blaze/60 py-6">
+      <address class="not-italic">
+        <a href={biz.directionsUrl} rel="noopener" target="_blank" class="font-cond text-xl font-bold uppercase tracking-[0.08em] text-cream hover:text-blaze sm:text-2xl">
+          {biz.address.street} <span class="text-blaze" aria-hidden="true">•</span> {biz.address.city}, {biz.address.state} {biz.address.zip}<span class="sr-only"> (opens Google Maps directions)</span>
         </a>
-        <a href={`tel:${biz.phone.tel}`} class="mt-4 flex items-center gap-3 text-cream hover:text-blaze">
-          <Icon name="phone" class="h-5 w-5 shrink-0 text-blaze" />
-          <span class="font-cond text-xl font-bold tracking-wide">{biz.phone.display}</span>
-        </a>
-        <a href={`tel:${biz.phoneAlt.tel}`} class="mt-2 flex items-center gap-3 text-bone hover:text-blaze">
-          <Icon name="phone" class="h-5 w-5 shrink-0 text-blaze/70" />
-          <span>{biz.phoneAlt.display} <span class="text-sm text-muted">({biz.phoneAlt.label.toLowerCase()})</span></span>
-        </a>
-        <a href={`mailto:${biz.email}`} class="mt-4 flex items-center gap-3 break-all text-bone hover:text-blaze">
-          <Icon name="mail" class="h-5 w-5 shrink-0 text-blaze" />
-          <span>{biz.email}</span>
-        </a>
+        <a href={`tel:${biz.phone.tel}`} class="mt-2 block font-display text-5xl tracking-wide text-cream hover:text-blaze sm:text-6xl">{biz.phone.display}</a>
+        <p class="mt-3 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-bone">
+          <a href={`tel:${biz.phoneAlt.tel}`} class="hover:text-blaze">{biz.phoneAlt.display} <span class="text-muted">({biz.phoneAlt.label.toLowerCase()})</span></a>
+          <a href={`mailto:${biz.email}`} class="break-all hover:text-blaze">{biz.email}</a>
+        </p>
       </address>
-      <nav aria-label="Footer" class="mt-8">
-        <ul class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-          {links.map((l) => <li><a href={l.href} class="text-bone hover:text-blaze">{l.label}</a></li>)}
-        </ul>
-      </nav>
     </div>
 
-    <div>
-      <h2 class="eyebrow">Season hours</h2>
-      <div class="mt-4 text-[0.95rem] text-bone">
-        <HoursTable compact />
-      </div>
-    </div>
-  </div>
+    <p class="mx-auto mt-6 max-w-2xl text-bone">
+      <strong class="font-cond text-lg font-bold uppercase tracking-[0.1em] text-cream">Open {formatTime(h.open)} – {formatTime(h.close)}, seven days a week</strong><br />
+      {biz.season.months}. Closed {closures}; the back-deck drop-off stays open.
+    </p>
 
-  <div class="container-x relative mt-14 border-t border-white/10 pt-6">
-    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-      <p class="flex items-start gap-2 text-sm text-bone">
+    <p class="script mt-8 text-4xl text-blaze sm:text-5xl">{biz.tagline}</p>
+
+    <ul class="mt-8 flex justify-center gap-3" aria-label="Social media">
+      {
+        social.map((s) => (
+          <li>
+            <a href={s.href} rel="noopener" target="_blank" class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white/20 text-cream transition hover:border-blaze hover:bg-blaze hover:text-ink">
+              <Icon name={s.icon} class="h-5 w-5" label={`Rust Deer Plant on ${s.label}`} />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <nav aria-label="Footer" class="mt-8">
+      <ul class="flex flex-wrap justify-center gap-x-6 gap-y-2 font-cond text-base font-semibold uppercase tracking-[0.12em]">
+        {links.map((l) => <li><a href={l.href} class="text-bone hover:text-blaze">{l.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="mx-auto mt-12 max-w-3xl rounded-sm border border-white/10 bg-ink/60 px-5 py-4 text-sm text-bone">
+      <p class="flex items-start justify-center gap-2 text-left sm:text-center">
         <Icon name="shield" class="mt-0.5 h-5 w-5 shrink-0 text-blaze" />
         <span><strong class="font-semibold text-cream">This is the official website of Rust Deer Plant.</strong> We are not affiliated with any other site using our name, or with the plant next door at 8911 Highway 6.</span>
       </p>
-      <p class="shrink-0 text-sm text-muted">&copy; {year} {biz.name} &middot; {biz.hashtag}</p>
     </div>
-    <p class="sr-only">{fullAddress}</p>
+    <p class="mt-6 text-sm text-muted">&copy; {year} {biz.name} &middot; Family-owned since {biz.ownedSince} &middot; {biz.hashtag}</p>
   </div>
 </footer>

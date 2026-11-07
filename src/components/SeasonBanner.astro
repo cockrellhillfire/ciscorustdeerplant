@@ -1,18 +1,14 @@
 ---
 import { biz, seasonBanner } from '../lib/business';
-import Icon from './Icon.astro';
+import AntlerMark from './AntlerMark.astro';
 const status = biz.season.status;
 const tone = status === 'closed' ? 'bg-char-3 text-cream' : 'bg-blaze text-ink';
 ---
 
-<div class:list={['relative z-40 text-center', tone]} role="region" aria-label="Season status">
-  <p class="container-x flex items-center justify-center gap-2 py-2 font-cond text-[0.95rem] font-bold uppercase leading-snug tracking-[0.06em] sm:text-base">
-    <span class="hidden h-2 w-2 shrink-0 rounded-full bg-current sm:inline-block" aria-hidden="true"></span>
-    <span>{seasonBanner()}</span>
-    <a
-      href="/drop-off/"
-      class="hidden shrink-0 items-center gap-1 underline decoration-2 underline-offset-4 hover:no-underline md:inline-flex"
-      >Drop-off guide <Icon name="arrow" class="h-4 w-4" /></a
-    >
+<div class:list={['torn-bottom relative z-40 pb-3', tone]} role="region" aria-label="Season status">
+  <p class="container-x flex items-center justify-center gap-3 pt-2 text-center font-cond text-[0.92rem] font-bold uppercase leading-snug tracking-[0.08em] sm:text-base">
+    <AntlerMark class="hidden h-4 w-4 shrink-0 sm:block" />
+    <span>{seasonBanner()} <a href="/drop-off/" class="whitespace-nowrap underline decoration-2 underline-offset-4 hover:no-underline">Drop-off guide</a></span>
+    <AntlerMark class="hidden h-4 w-4 shrink-0 sm:block" />
   </p>
 </div>

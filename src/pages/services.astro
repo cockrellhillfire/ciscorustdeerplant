@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import PriceList from '../components/PriceList.astro';
 import Icon from '../components/Icon.astro';
+import AntlerMark from '../components/AntlerMark.astro';
 import { biz, photo, formatPrice } from '../lib/business';
 
 const p = biz.pricing;
@@ -16,9 +17,17 @@ const jump = [
   { id: 'link-sausage', label: 'Link Sausage' },
   { id: 'summer-sausage', label: 'Summer Sausage' },
   { id: 'more-specialties', label: 'Specialties' },
+  { id: 'flavors', label: 'Flavors' },
   { id: 'merch', label: 'Merch' },
 ];
 const sausage = photo('smoked-link-sausage.jpg');
+const euro = photo('elk-european-mount.jpg');
+const flavorGroups = [
+  { title: 'Link sausage', list: biz.flavors.linkSausage },
+  { title: 'Summer sausage', list: biz.flavors.summerSausage },
+  { title: 'Jerky', list: biz.flavors.jerky },
+  { title: 'Snack sticks', list: biz.flavors.snackSticks },
+];
 
 const priceSchema = {
   '@context': 'https://schema.org',
@@ -43,127 +52,153 @@ const priceSchema = {
   jsonLd={[priceSchema]}
 >
   <PageHero
-    eyebrow="Processing & specialty price guide"
-    title="Services & Pricing"
-    lead="Whitetail, mule deer, elk, hogs and exotics. Steaks, roasts, burger and chili come standard. Add specialty sausage, jerky and euros to make it yours."
+    eyebrow="Services & pricing"
+    title="The price guide"
+    ribbon={`${p.updated} · Prices can change`}
+    lead="Whitetail, mule deer, elk, hogs and exotics. Steaks, roasts, burger and chili come standard. Add sausage, jerky and euros to make it yours."
     photo={photo('butchering-table.jpg')}
-  >
-    <p class="mt-6 inline-flex items-start gap-2 rounded-sm border border-white/15 bg-ink/60 px-4 py-3 text-bone">
-      <Icon name="phone" class="mt-0.5 h-5 w-5 shrink-0 text-blaze" />
-      <span>Prices can change. Call to confirm before you bring in your harvest: <a href={`tel:${biz.phone.tel}`} class="font-semibold text-cream underline decoration-blaze decoration-2">{biz.phone.display}</a></span>
-    </p>
-  </PageHero>
+    next="char"
+  />
 
-  <nav aria-label="Price guide sections" class="sticky top-[4.5rem] z-20 border-b border-brown/20 bg-bone/95 backdrop-blur">
-    <ul class="container-x flex gap-2 overflow-x-auto py-2.5 [scrollbar-width:none]">
-      {
-        jump.map((j) => (
-          <li class="shrink-0">
-            <a href={`#${j.id}`} class="block rounded-full border border-brown/30 px-3.5 py-1.5 font-cond text-sm font-bold uppercase tracking-[0.08em] text-ink transition hover:border-rust hover:bg-rust hover:text-cream">
-              {j.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </nav>
+  <div class="grain bg-char pb-20">
+    <!-- Section tags -->
+    <nav aria-label="Price guide sections" class="container-x">
+      <ul class="flex flex-wrap justify-center gap-2.5 pt-4">
+        {
+          jump.map((j, i) => (
+            <li class:list={[i % 2 ? 'tilt-r' : 'tilt-l2']}>
+              <a href={`#${j.id}`} class="hang-tag block bg-cream font-cond text-sm font-bold uppercase tracking-[0.1em] text-ink transition hover:bg-blaze [--tag-hole:var(--color-char)]">
+                {j.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
 
-  <div class="on-light grain grain-light bg-cream text-ink">
-    <div class="container-x section !pt-12">
-      <div class="grid gap-6 lg:grid-cols-2">
-        <!-- Left column -->
-        <div class="flex flex-col gap-6">
-          <PriceList id="basic-processing" title={p.basicProcessing.title} items={p.basicProcessing.items}>
-            <p class="mt-3 rounded-sm bg-bone px-4 py-3 text-[0.98rem] font-semibold text-ink">{p.basicProcessing.includes}</p>
-          </PriceList>
+    <!-- The printed sheet -->
+    <article class="on-light container-x mt-10 max-w-6xl" aria-labelledby="sheet-title">
+      <div class="grain grain-light rounded-sm bg-[#fbf6ec] px-4 pb-10 pt-10 text-ink shadow-[0_40px_80px_-40px_rgb(0_0_0/0.9)] sm:px-10">
+        <header class="text-center">
+          <AntlerMark class="mx-auto h-16 w-16 text-ink" />
+          <p class="mt-2 font-display text-5xl uppercase leading-none sm:text-6xl">Rust Deer Plant</p>
+          <p class="ruled mt-2 font-cond text-sm font-bold uppercase tracking-[0.34em] text-rust">Wild Game Processing</p>
+          <h2 id="sheet-title" class="mx-auto mt-6 max-w-3xl bg-rust px-4 py-3 font-display text-3xl uppercase text-cream sm:text-4xl">Processing & Specialty Price Guide</h2>
+        </header>
 
-          <PriceList id="hog-processing" title={p.hogProcessing.title} items={p.hogProcessing.items} />
-
-          <PriceList id="fees-and-euros" title={p.feesAndEuros.title} items={p.feesAndEuros.items}>
-            <p class="mt-3 text-sm text-brown">
-              The $100 charge applies only to animals left at the after-hours drop-off with the guts in. See the <a href="/drop-off/#after-hours" class="font-semibold text-rust-deep underline">drop-off guide</a>.
-            </p>
-          </PriceList>
-
-          <PriceList id="cut-options" title={p.cutOptions.title}>
-            <dl class="divide-y divide-brown/20">
-              {
-                p.cutOptions.cuts.map((c) => (
-                  <div class="py-3">
-                    <dt class="font-cond text-lg font-bold uppercase tracking-[0.08em] text-rust-deep">{c.cut}</dt>
-                    <dd class="mt-1.5 flex flex-wrap gap-1.5">
-                      {c.options.map((o) => <span class="rounded-full border border-brown/30 bg-bone/70 px-2.5 py-0.5 text-sm">{o}</span>)}
-                    </dd>
-                  </div>
-                ))
-              }
-            </dl>
-            <ul class="mt-2 border-t border-brown/20 pt-1">
-              {
-                p.cutOptions.upcharges.map((u) => (
-                  <li class="price-row">
-                    <span class="font-semibold">{u.item}</span>
-                    <span class="leader" aria-hidden="true" />
-                    <span class="amount">+{formatPrice(u.price)}</span>
-                  </li>
-                ))
-              }
-            </ul>
-            <div class="mt-3 rounded-sm bg-bone px-4 py-3">
-              <p class="font-cond text-sm font-bold uppercase tracking-[0.1em] text-rust-deep">Grind options</p>
-              <p class="mt-1 font-semibold">{p.cutOptions.grind.join(' · ')}</p>
-              <p class="text-sm text-brown">{p.cutOptions.grindNote}</p>
-            </div>
-          </PriceList>
-        </div>
-
-        <!-- Right column -->
-        <div class="flex flex-col gap-6">
-          <PriceList id="hog-cuts" title={p.hogCuts.title} items={p.hogCuts.items}>
-            <Fragment slot="before">
-              <p class="mb-1 mt-2 flex flex-wrap gap-1.5">
-                {p.hogCuts.options.map((o) => <span class="rounded-full border border-brown/30 bg-bone/70 px-2.5 py-0.5 text-sm">{o}</span>)}
+        <div class="mt-10 grid gap-x-10 gap-y-8 lg:grid-cols-2">
+          <div class="flex flex-col gap-8">
+            <PriceList id="basic-processing" title={p.basicProcessing.title} items={p.basicProcessing.items}>
+              <p class="mt-3 border-y-2 border-rust/40 py-3 text-center text-[0.98rem] font-semibold">{p.basicProcessing.includes}</p>
+            </PriceList>
+            <PriceList id="hog-processing" title={p.hogProcessing.title} items={p.hogProcessing.items} />
+            <PriceList id="fees-and-euros" title={p.feesAndEuros.title} items={p.feesAndEuros.items}>
+              <p class="mt-3 text-sm text-brown">
+                The $100 charge applies only to animals left at the after-hours drop-off with the guts in. See the <a href="/drop-off/#after-hours" class="font-semibold text-rust-deep underline">drop-off guide</a>.
               </p>
-            </Fragment>
-          </PriceList>
-
-          <PriceList id="link-sausage" title={p.linkSausage.title} items={p.linkSausage.items} />
-          <PriceList id="summer-sausage" title={p.summerSausage.title} items={p.summerSausage.items} />
-          <PriceList id="more-specialties" title={p.moreSpecialties.title} items={p.moreSpecialties.items} />
-
-          <div class="reveal relative rotate-[-1deg] bg-rust px-6 py-6 text-center text-cream shadow-lg">
-            <p class="font-display text-5xl uppercase leading-none sm:text-6xl">6 lb minimum</p>
-            <p class="mt-2 font-cond text-xl font-bold uppercase tracking-[0.25em]">— on all sausage —</p>
+            </PriceList>
+            <PriceList id="cut-options" title={p.cutOptions.title}>
+              <dl class="divide-y divide-brown/20">
+                {
+                  p.cutOptions.cuts.map((c) => (
+                    <div class="py-3">
+                      <dt class="font-cond text-lg font-bold uppercase tracking-[0.08em] text-rust-deep">{c.cut}</dt>
+                      <dd class="mt-1">{c.options.join(' · ')}</dd>
+                    </div>
+                  ))
+                }
+              </dl>
+              <ul class="mt-1 border-t border-brown/20 pt-1">
+                {
+                  p.cutOptions.upcharges.map((u) => (
+                    <li class="price-row">
+                      <span class="font-semibold italic">{u.item}</span>
+                      <span class="leader" aria-hidden="true" />
+                      <span class="amount">+{formatPrice(u.price)}</span>
+                    </li>
+                  ))
+                }
+              </ul>
+              <p class="mt-3 border-t-2 border-rust/40 pt-3 text-center">
+                <span class="font-semibold">{p.cutOptions.grind.join(' · ')}</span><br />
+                <span class="text-sm text-brown">{p.cutOptions.grindNote}</span>
+              </p>
+            </PriceList>
           </div>
 
-          <figure class="reveal overflow-hidden rounded-sm">
-            <Picture src={sausage.src} alt={sausage.alt} formats={['avif', 'webp']} widths={[480, 720, 960]} sizes="(min-width: 1024px) 36rem, 100vw" class="aspect-[4/3] w-full object-cover" />
-            <figcaption class="bg-ink px-4 py-2 text-sm text-bone">{biz.flavors.note}</figcaption>
+          <div class="flex flex-col gap-8">
+            <PriceList id="hog-cuts" title={p.hogCuts.title} items={p.hogCuts.items}>
+              <Fragment slot="before">
+                <p class="mb-1 mt-2">{p.hogCuts.options.join(' · ')}</p>
+              </Fragment>
+            </PriceList>
+            <PriceList id="link-sausage" title={p.linkSausage.title} items={p.linkSausage.items} />
+            <PriceList id="summer-sausage" title={p.summerSausage.title} items={p.summerSausage.items} />
+            <PriceList id="more-specialties" title={p.moreSpecialties.title} items={p.moreSpecialties.items} />
+            <div class="reveal relative rotate-[-1.5deg] bg-rust px-6 py-6 text-center text-cream shadow-lg [clip-path:polygon(0_0,100%_0,96%_50%,100%_100%,0_100%,4%_50%)]">
+              <p class="font-display text-5xl uppercase leading-none sm:text-6xl">6 lb minimum</p>
+              <p class="mt-2 font-cond text-xl font-bold uppercase tracking-[0.25em]">— on all sausage —</p>
+            </div>
+          </div>
+        </div>
+
+        <footer class="mt-12 border-t-2 border-rust/50 pt-6 text-center">
+          <p class="font-cond text-xl font-bold uppercase tracking-[0.08em]">{biz.address.street} • {biz.address.city}, {biz.address.state} {biz.address.zip}</p>
+          <a href={`tel:${biz.phone.tel}`} class="mt-1 block font-display text-4xl hover:text-rust">{biz.phone.display}</a>
+          <p class="script mt-2 text-3xl text-rust">{biz.tagline}</p>
+          <p class="mt-4 text-sm text-brown">{p.disclaimer}</p>
+        </footer>
+      </div>
+    </article>
+
+    <!-- Payment, discounts, rush -->
+    <section class="container-x mt-20 max-w-6xl" aria-label="Payment, discounts and rush orders">
+      <div class="grid gap-8 md:grid-cols-3">
+        {
+          [
+            { icon: 'cash', title: 'Paying for your order', text: biz.payment.policy, small: `We take ${biz.payment.methods.join(', ').toLowerCase()}.` },
+            { icon: 'shield', title: biz.discounts[0].title, text: biz.discounts[0].text, small: '' },
+            { icon: 'clock', title: 'Need it fast?', text: 'Rush orders are available. Ask for pricing when you drop off, or give us a call.', small: biz.phone.display },
+          ].map((c, i) => (
+            <div class:list={['reveal border-t-4 border-blaze pt-5 text-center', i === 1 && 'md:translate-y-6']}>
+              <Icon name={c.icon as 'cash'} class="mx-auto h-9 w-9 text-blaze" />
+              <h2 class="mt-3 text-3xl text-cream">{c.title}</h2>
+              <p class="mt-2 text-bone">{c.text}</p>
+              {c.small && <p class="mt-2 text-sm text-muted">{c.small}</p>}
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+
+  <!-- Flavors -->
+  <section id="flavors" class="grain section scroll-mt-20 bg-ink" aria-labelledby="flavors-title">
+    <div class="container-x">
+      <div class="reveal text-center">
+        <p class="ruled eyebrow">Know your flavors</p>
+        <h2 id="flavors-title" class="mt-3 text-6xl text-cream sm:text-7xl">What to put on your cut ticket</h2>
+        <p class="mx-auto mt-4 max-w-2xl text-bone">{biz.flavors.note} {biz.pricing.minimum}.</p>
+      </div>
+      <div class="mt-12 grid items-start gap-10 lg:grid-cols-[1fr_1.6fr]">
+        <div class="relative mx-auto hidden w-full max-w-sm lg:block">
+          <figure class="taped tilt-l">
+            <Picture src={sausage.src} alt={sausage.alt} formats={['avif', 'webp']} widths={[320, 480, 640]} sizes="24rem" class="aspect-[4/5] w-full object-cover" />
+          </figure>
+          <figure class="taped tilt-r2 -mt-24 ml-24 w-2/3">
+            <Picture src={euro.src} alt={euro.alt} formats={['avif', 'webp']} widths={[240, 400]} sizes="16rem" class="aspect-square w-full object-cover" />
           </figure>
         </div>
-      </div>
-
-      <!-- Flavor notes -->
-      <section class="mt-16" aria-labelledby="flavors-title">
-        <div class="reveal max-w-2xl">
-          <p class="eyebrow">Know your flavors</p>
-          <h2 id="flavors-title" class="mt-3 text-5xl sm:text-6xl">What to put on your cut ticket</h2>
-        </div>
-        <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+        <div class="grid gap-x-10 gap-y-10 sm:grid-cols-2">
           {
-            [
-              { title: 'Link sausage', list: biz.flavors.linkSausage },
-              { title: 'Summer sausage', list: biz.flavors.summerSausage },
-              { title: 'Jerky', list: biz.flavors.jerky },
-              { title: 'Snack sticks', list: biz.flavors.snackSticks },
-            ].map((g) => (
-              <div class="reveal rounded-sm border border-brown/25 bg-bone/60 p-5">
-                <h3 class="text-2xl text-rust-deep">{g.title}</h3>
-                <dl class="mt-3 space-y-3">
+            flavorGroups.map((g) => (
+              <div class="reveal">
+                <h3 class="border-b-2 border-blaze pb-2 text-3xl text-blaze">{g.title}</h3>
+                <dl class="mt-4 space-y-4">
                   {g.list.map((f) => (
                     <div>
-                      <dt class="font-semibold">{f.name}</dt>
-                      <dd class="text-[0.95rem] text-brown">{f.description}</dd>
+                      <dt class="font-cond text-xl font-bold uppercase tracking-[0.04em] text-cream">{f.name}</dt>
+                      <dd class="text-bone">{f.description}</dd>
                     </div>
                   ))}
                 </dl>
@@ -171,53 +206,28 @@ const priceSchema = {
             ))
           }
         </div>
-      </section>
-
-      <!-- Policies -->
-      <section class="mt-16 grid gap-5 md:grid-cols-3" aria-label="Payment, discounts and rush orders">
-        <div class="reveal rounded-sm bg-ink p-6 text-cream">
-          <Icon name="cash" class="h-8 w-8 text-blaze" />
-          <h2 class="mt-3 text-3xl">Paying for your order</h2>
-          <p class="mt-2 text-bone">{biz.payment.policy}</p>
-          <p class="mt-3 text-sm text-muted">We take {biz.payment.methods.join(', ').toLowerCase()}.</p>
-        </div>
-        <div class="reveal rounded-sm bg-ink p-6 text-cream">
-          <Icon name="shield" class="h-8 w-8 text-blaze" />
-          <h2 class="mt-3 text-3xl">{biz.discounts[0].title}</h2>
-          <p class="mt-2 text-bone">{biz.discounts[0].text}</p>
-        </div>
-        <div class="reveal rounded-sm bg-ink p-6 text-cream">
-          <Icon name="clock" class="h-8 w-8 text-blaze" />
-          <h2 class="mt-3 text-3xl">Need it fast?</h2>
-          <p class="mt-2 text-bone">Rush orders are available. Ask for pricing when you drop off, or call <a href={`tel:${biz.phone.tel}`} class="text-cream underline decoration-blaze decoration-2">{biz.phone.display}</a>.</p>
-        </div>
-      </section>
-
-      <!-- Merch -->
-      {
-        biz.merch.show && (
-          <section id="merch" class="mt-16 scroll-mt-40 rounded-sm border border-brown/25 bg-bone/60 p-6 sm:p-8" aria-labelledby="merch-title">
-            <div class="grid gap-6 md:grid-cols-[1fr_1.2fr] md:items-center">
-              <div class="reveal">
-                <p class="eyebrow">Rust gear</p>
-                <h2 id="merch-title" class="mt-2 text-4xl sm:text-5xl">Wear the antlers</h2>
-                <p class="mt-3 text-brown">{biz.merch.text}</p>
-              </div>
-              <ul class="reveal grid gap-x-8 sm:grid-cols-2">
-                {biz.merch.items.map((m) => (
-                  <li class="price-row">
-                    <span class="font-semibold">{m.item}</span>
-                    {m.price !== null && <span class="leader" aria-hidden="true" />}
-                    {m.price !== null && <span class="amount">{formatPrice(m.price)}</span>}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-        )
-      }
-
-      <p class="mt-10 text-center text-sm text-brown">Price guide for the {p.updated}. {p.disclaimer}</p>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <!-- Merch -->
+  {
+    biz.merch.show && (
+      <section id="merch" class="on-light grain grain-light section scroll-mt-20 bg-cream text-ink" aria-labelledby="merch-title">
+        <div class="container-x max-w-4xl text-center">
+          <p class="ruled eyebrow reveal">Rust gear</p>
+          <h2 id="merch-title" class="reveal mt-3 text-6xl sm:text-7xl">Wear the antlers</h2>
+          <p class="reveal mt-3 text-brown">{biz.merch.text}</p>
+          <ul class="reveal mt-8 flex flex-wrap justify-center gap-3">
+            {biz.merch.items.map((m) => (
+              <li class="hang-tag bg-ink font-cond text-lg font-bold uppercase tracking-[0.06em] text-cream [--tag-hole:var(--color-cream)]">
+                {m.item}
+                {m.price !== null && <span class="ml-2 text-blaze">{formatPrice(m.price)}</span>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
 </BaseLayout>

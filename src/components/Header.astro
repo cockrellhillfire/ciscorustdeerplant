@@ -1,101 +1,132 @@
 ---
+/**
+ * Emblem header: the antler mark and wordmark sit in the center, like the top of the shop's
+ * price guide, with the navigation split on either side. Phones get a slim bar with the mark
+ * centered and a full-screen menu.
+ */
 import { biz } from '../lib/business';
-import Logo from './Logo.astro';
 import Icon from './Icon.astro';
+import AntlerMark from './AntlerMark.astro';
 
-export const nav = [
-  { href: '/services/', label: 'Services & Pricing' },
-  { href: '/drop-off/', label: 'Drop-Off Guide' },
+const left = [
+  { href: '/services/', label: 'Prices' },
+  { href: '/drop-off/', label: 'Drop-Off' },
   { href: '/gallery/', label: 'Gallery' },
-  { href: '/about/', label: 'About' },
+];
+const right = [
+  { href: '/about/', label: 'Our Story' },
   { href: '/contact/', label: 'Contact' },
 ];
+const all = [{ href: '/', label: 'Home' }, ...left, ...right];
 const path = Astro.url.pathname;
-const isActive = (href: string) => path === href || path.startsWith(href);
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+const link =
+  'relative whitespace-nowrap px-1 py-2 font-cond text-[1.08rem] font-bold uppercase tracking-[0.14em] text-bone transition-colors hover:text-blaze aria-[current=page]:text-blaze after:absolute after:inset-x-1 after:-bottom-0.5 after:h-[3px] after:origin-left after:scale-x-0 after:bg-blaze after:transition-transform hover:after:scale-x-100 aria-[current=page]:after:scale-x-100';
 ---
 
-<header class="sticky top-0 z-30 border-b border-white/10 bg-ink/95 backdrop-blur supports-[backdrop-filter]:bg-ink/85">
-  <div class="container-x flex h-[4.5rem] items-center justify-between gap-4">
-    <a href="/" class="shrink-0 rounded-sm" aria-label="Rust Deer Plant home">
-      <Logo />
+<header class="sticky top-0 z-30 bg-ink lg:static">
+  <!-- Desktop -->
+  <div class="container-x hidden h-[7.25rem] grid-cols-[1fr_auto_1fr] items-center gap-6 lg:grid">
+    <nav aria-label="Main, part 1" class="justify-self-end">
+      <ul class="flex items-center gap-5 xl:gap-7">
+        {left.map((i) => <li><a href={i.href} aria-current={isActive(i.href) ? 'page' : undefined} class={link}>{i.label}</a></li>)}
+      </ul>
+    </nav>
+    <a href="/" class="group flex flex-col items-center px-4 text-center" aria-label="Rust Deer Plant home">
+      <AntlerMark class="h-11 w-11 text-blaze transition-transform duration-300 group-hover:-translate-y-0.5" />
+      <span class="mt-1.5 font-display text-[1.75rem] uppercase leading-none tracking-wide text-cream">Rust Deer Plant</span>
+      <span class="ruled mt-1 font-cond text-[0.66rem] font-bold uppercase tracking-[0.34em] text-sand">Wild Game Processing</span>
     </a>
+    <div class="flex items-center gap-5 justify-self-start xl:gap-7">
+      <nav aria-label="Main, part 2">
+        <ul class="flex items-center gap-5 xl:gap-7">
+          {right.map((i) => <li><a href={i.href} aria-current={isActive(i.href) ? 'page' : undefined} class={link}>{i.label}</a></li>)}
+        </ul>
+      </nav>
+      <a href={`tel:${biz.phone.tel}`} class="hang-tag whitespace-nowrap bg-blaze font-cond text-lg font-bold tracking-[0.06em] text-ink transition hover:bg-blaze-hot [--tag-hole:var(--color-ink)]">
+        {biz.phone.display}
+      </a>
+    </div>
+  </div>
 
-    <nav aria-label="Main" class="hidden lg:block">
-      <ul class="flex items-center gap-1">
+  <!-- Phones and tablets -->
+  <div class="grid h-16 grid-cols-[3rem_1fr_3rem] items-center px-2 lg:hidden">
+    <button
+      type="button"
+      class="flex h-12 w-12 items-center justify-center text-cream"
+      aria-controls="mobile-nav"
+      aria-expanded="false"
+      data-menu-toggle
+    >
+      <span class="sr-only">Menu</span>
+      <Icon name="menu" class="h-7 w-7" />
+    </button>
+    <a href="/" class="flex items-center justify-center gap-2" aria-label="Rust Deer Plant home">
+      <AntlerMark class="h-7 w-7 text-blaze" />
+      <span class="font-display text-xl uppercase tracking-wide text-cream">Rust Deer Plant</span>
+    </a>
+    <a href={`tel:${biz.phone.tel}`} class="flex h-12 w-12 items-center justify-center text-blaze">
+      <Icon name="phone" class="h-6 w-6" label={`Call ${biz.phone.display}`} />
+    </a>
+  </div>
+  <div class="h-[3px] bg-[repeating-linear-gradient(90deg,var(--color-blaze)_0_28px,transparent_28px_36px)] opacity-70" aria-hidden="true"></div>
+
+  <nav id="mobile-nav" aria-label="Main" class="fixed inset-0 z-50 hidden flex-col bg-ink lg:hidden" data-menu>
+    <div class="grain flex h-full flex-col">
+      <div class="flex h-16 items-center justify-between px-2">
+        <span class="w-12"></span>
+        <AntlerMark class="h-8 w-8 text-blaze" />
+        <button type="button" class="flex h-12 w-12 items-center justify-center text-cream" data-menu-close>
+          <Icon name="close" class="h-7 w-7" label="Close menu" />
+        </button>
+      </div>
+      <ul class="flex flex-1 flex-col justify-center gap-1 px-8">
         {
-          nav.map((item) => (
+          all.map((i, n) => (
             <li>
               <a
-                href={item.href}
-                aria-current={isActive(item.href) ? 'page' : undefined}
-                class="relative rounded-sm px-3 py-2 font-cond text-[1.05rem] font-semibold uppercase tracking-[0.08em] text-bone transition-colors hover:text-blaze aria-[current=page]:text-blaze"
+                href={i.href}
+                aria-current={isActive(i.href) ? 'page' : undefined}
+                class="group flex items-baseline gap-4 py-2 font-display text-5xl uppercase text-cream aria-[current=page]:text-blaze"
               >
-                {item.label}
+                <span class="font-cond text-base font-bold tracking-[0.2em] text-blaze/70" aria-hidden="true">{String(n + 1).padStart(2, '0')}</span>
+                {i.label}
               </a>
             </li>
           ))
         }
       </ul>
-    </nav>
-
-    <div class="flex items-center gap-2">
-      <a href={`tel:${biz.phone.tel}`} class="btn btn-primary !min-h-11 !px-3.5 !text-base sm:!px-4">
-        <Icon name="phone" />
-        <span class="hidden sm:inline">{biz.phone.display}</span>
-        <span class="sm:hidden">Call</span>
-      </a>
-      <button
-        type="button"
-        class="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-white/20 text-cream lg:hidden"
-        aria-controls="mobile-nav"
-        aria-expanded="false"
-        data-menu-toggle
-      >
-        <span class="sr-only">Menu</span>
-        <Icon name="menu" class="h-6 w-6" />
-      </button>
+      <div class="border-t border-white/10 p-6 text-center">
+        <p class="script text-2xl text-blaze">{biz.tagline}</p>
+        <p class="mt-2 text-sm text-muted">{biz.address.street}, {biz.address.city}, {biz.address.state}</p>
+      </div>
     </div>
-  </div>
-
-  <nav id="mobile-nav" aria-label="Main" class="hidden border-t border-white/10 bg-ink lg:hidden" data-menu>
-    <ul class="container-x divide-y divide-white/10 py-2">
-      <li>
-        <a href="/" aria-current={path === '/' ? 'page' : undefined} class="flex items-center justify-between py-3.5 font-cond text-xl font-semibold uppercase tracking-[0.06em] text-cream aria-[current=page]:text-blaze">
-          Home <Icon name="right" class="h-5 w-5 text-blaze" />
-        </a>
-      </li>
-      {
-        nav.map((item) => (
-          <li>
-            <a
-              href={item.href}
-              aria-current={isActive(item.href) ? 'page' : undefined}
-              class="flex items-center justify-between py-3.5 font-cond text-xl font-semibold uppercase tracking-[0.06em] text-cream aria-[current=page]:text-blaze"
-            >
-              {item.label}
-              <Icon name="right" class="h-5 w-5 text-blaze" />
-            </a>
-          </li>
-        ))
-      }
-    </ul>
   </nav>
-  <noscript><style>[data-menu-toggle]{display:none!important}</style></noscript>
+  <noscript><style>[data-menu-toggle]{visibility:hidden}</style></noscript>
 </header>
 
 <script>
   const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const close = document.querySelector<HTMLButtonElement>('[data-menu-close]');
   const menu = document.querySelector<HTMLElement>('[data-menu]');
   if (toggle && menu) {
     const setOpen = (open: boolean) => {
       toggle.setAttribute('aria-expanded', String(open));
       menu.classList.toggle('hidden', !open);
+      menu.classList.toggle('flex', open);
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+      (open ? close : toggle)?.focus();
     };
-    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    toggle.addEventListener('click', () => setOpen(true));
+    close?.addEventListener('click', () => setOpen(false));
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
-        setOpen(false);
-        toggle.focus();
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') setOpen(false);
+      // Keep focus inside the open menu.
+      if (e.key === 'Tab' && toggle.getAttribute('aria-expanded') === 'true') {
+        const f = Array.from(menu.querySelectorAll<HTMLElement>('a, button'));
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
     });
     window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => e.matches && setOpen(false));

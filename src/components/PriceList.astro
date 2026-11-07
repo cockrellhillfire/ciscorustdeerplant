@@ -1,4 +1,5 @@
 ---
+/** One section of the printed price guide: orange title bar, then items with dotted leaders. */
 import { formatPrice } from '../lib/business';
 interface Item {
   item: string;
@@ -16,16 +17,16 @@ interface Props {
 const { id, title, items = [], class: className = '' } = Astro.props;
 ---
 
-<section id={id} class:list={['reveal scroll-mt-40 overflow-hidden rounded-sm border border-brown/25 bg-[#fbf7ef] shadow-[0_14px_30px_-24px_rgb(0_0_0/0.7)]', className]} aria-labelledby={`${id}-title`}>
-  <h2 id={`${id}-title`} class="bg-rust px-5 py-3 font-display text-[1.7rem] uppercase tracking-[0.02em] text-cream">{title}</h2>
-  <div class="px-5 pb-4 pt-2">
+<section id={id} class:list={['reveal scroll-mt-24', className]} aria-labelledby={`${id}-title`}>
+  <h3 id={`${id}-title`} class="bg-rust px-4 py-2 font-display text-[1.65rem] uppercase tracking-[0.02em] text-cream">{title}</h3>
+  <div class="px-1 pt-1">
     <slot name="before" />
     {
       items.length > 0 && (
         <ul>
           {items.map((it) => (
             <li class="price-row">
-              <span class="font-semibold text-ink">
+              <span class="text-[1.08rem] font-semibold text-ink">
                 {it.item}
                 {it.badge && <span class="ml-1.5 rounded-sm bg-blaze px-1.5 py-0.5 align-middle font-cond text-xs font-bold uppercase tracking-wider text-ink">{it.badge}</span>}
                 {it.note && it.price !== null && <span class="block text-sm font-normal text-brown">{it.note}</span>}

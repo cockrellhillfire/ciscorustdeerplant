@@ -1,121 +1,134 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
 import HoursTable from '../components/HoursTable.astro';
 import MapEmbed from '../components/MapEmbed.astro';
 import Icon from '../components/Icon.astro';
-import { biz, photo } from '../lib/business';
-const field =
-  'mt-1.5 block w-full rounded-sm border border-brown/40 bg-white px-3.5 py-3 text-base text-ink placeholder:text-brown/60 focus:border-rust focus:outline-none focus:ring-2 focus:ring-rust/40';
-const label = 'font-cond text-base font-bold uppercase tracking-[0.08em] text-ink';
+import AntlerMark from '../components/AntlerMark.astro';
+import { biz } from '../lib/business';
+const label = 'font-cond text-sm font-bold uppercase tracking-[0.16em] text-rust-deep';
+const social = [
+  { href: biz.social.facebook, icon: 'facebook', label: 'Facebook' },
+  { href: biz.social.instagram, icon: 'instagram', label: 'Instagram' },
+  { href: biz.social.tiktok, icon: 'tiktok', label: 'TikTok' },
+] as const;
 ---
 
 <BaseLayout
   title="Contact"
   description="Call Rust Deer Plant at (254) 442-1653. 8913 Highway 6, Cisco, TX 76437. Open 9 AM–9 PM daily, October through January. Directions, hours and contact form."
 >
-  <PageHero eyebrow="Call, stop by or send a note" title="Contact us" photo={photo('front-office.jpg')}>
-    <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-      <a href={`tel:${biz.phone.tel}`} class="btn btn-primary !text-xl"><Icon name="phone" /> {biz.phone.display}</a>
-      <a href={`tel:${biz.phoneAlt.tel}`} class="btn btn-ghost"><Icon name="phone" /> {biz.phoneAlt.display}</a>
+  <!-- Big phone number first: most people just want to call. -->
+  <section class="grain torn-bottom relative bg-ink pb-8">
+    <div class="container-x py-16 text-center sm:py-20">
+      <AntlerMark class="mx-auto h-10 w-10 text-blaze" />
+      <p class="ruled eyebrow mt-4 !text-sand">Call, stop by or send a note</p>
+      <h1 class="mt-3 text-6xl text-cream sm:text-8xl">Contact us</h1>
+      <a href={`tel:${biz.phone.tel}`} class="group mt-8 inline-block">
+        <span class="block font-cond text-sm font-bold uppercase tracking-[0.24em] text-bone">Tap to call the plant</span>
+        <span class="mt-1 block font-display text-6xl text-blaze transition group-hover:text-blaze-hot sm:text-8xl lg:text-9xl">{biz.phone.display}</span>
+      </a>
+      <p class="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-lg text-bone">
+        <a href={`tel:${biz.phoneAlt.tel}`} class="hover:text-blaze">{biz.phoneAlt.label}: <strong class="text-cream">{biz.phoneAlt.display}</strong></a>
+        <span class="hidden text-blaze sm:inline" aria-hidden="true">•</span>
+        <span>Also on WhatsApp</span>
+        <span class="hidden text-blaze sm:inline" aria-hidden="true">•</span>
+        <a href={`mailto:${biz.email}`} class="break-all hover:text-blaze">{biz.email}</a>
+      </p>
+      <ul class="mt-8 flex justify-center gap-3" aria-label="Social media">
+        {
+          social.map((s) => (
+            <li>
+              <a href={s.href} rel="noopener" target="_blank" class="btn btn-ghost !min-h-11 !px-4 !text-base">
+                <Icon name={s.icon} /> {s.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
-  </PageHero>
+  </section>
 
   <div class="grain bg-char">
-    <div class="container-x section grid gap-10 lg:grid-cols-[1fr_1.15fr]">
-      <div class="space-y-8">
-        <section aria-labelledby="reach-title" class="rounded-sm border border-white/10 bg-char-2 p-6">
-          <h2 id="reach-title" class="text-4xl text-cream">Reach us</h2>
-          <dl class="mt-5 space-y-5">
-            <div class="flex gap-4">
-              <dt><Icon name="phone" class="mt-1 h-6 w-6 text-blaze" label="Phone" /></dt>
-              <dd>
-                <a href={`tel:${biz.phone.tel}`} class="font-cond text-2xl font-bold tracking-wide text-cream hover:text-blaze">{biz.phone.display}</a>
-                <span class="block text-sm text-muted">Main plant line, also on WhatsApp</span>
-                <a href={`tel:${biz.phoneAlt.tel}`} class="mt-2 inline-block font-cond text-xl font-bold tracking-wide text-bone hover:text-blaze">{biz.phoneAlt.display}</a>
-                <span class="block text-sm text-muted">{biz.phoneAlt.label}</span>
-              </dd>
+    <div class="container-x section grid items-start gap-12 lg:grid-cols-[1.2fr_1fr]">
+      <!-- The form, styled as a cut ticket -->
+      <section aria-labelledby="form-title" class="on-light relative bg-[#fbf6ec] text-ink shadow-[0_40px_70px_-40px_rgb(0_0_0/0.9)]">
+        <div class="flex items-center justify-between gap-4 border-b-[3px] border-ink px-6 py-4 sm:px-8">
+          <div class="flex items-center gap-3">
+            <AntlerMark class="h-9 w-9 text-ink" />
+            <div>
+              <p class="font-display text-2xl uppercase leading-none">Rust Deer Plant</p>
+              <p class="text-xs text-brown">{biz.phone.display} · {biz.address.street} · {biz.address.city}, {biz.address.state}</p>
             </div>
-            <div class="flex gap-4">
-              <dt><Icon name="pin" class="mt-1 h-6 w-6 text-blaze" label="Address" /></dt>
-              <dd>
-                <address class="not-italic text-cream">{biz.address.street}<br />{biz.address.city}, {biz.address.state} {biz.address.zip}</address>
-                <a href={biz.directionsUrl} rel="noopener" target="_blank" class="mt-1 inline-flex items-center gap-1 font-cond font-bold uppercase tracking-[0.1em] text-blaze hover:text-blaze-hot">
-                  Open in Google Maps <Icon name="external" class="h-4 w-4" /><span class="sr-only">(opens Google Maps)</span>
-                </a>
-                <span class="mt-1 block text-sm text-muted">{biz.address.note}</span>
-              </dd>
-            </div>
-            <div class="flex gap-4">
-              <dt><Icon name="mail" class="mt-1 h-6 w-6 text-blaze" label="Email" /></dt>
-              <dd><a href={`mailto:${biz.email}`} class="break-all text-cream hover:text-blaze">{biz.email}</a></dd>
-            </div>
-          </dl>
-          <ul class="mt-6 flex flex-wrap gap-3 border-t border-white/10 pt-6" aria-label="Social media">
-            <li><a href={biz.social.facebook} rel="noopener" target="_blank" class="btn btn-ghost !min-h-11 !px-4 !text-base"><Icon name="facebook" /> Facebook</a></li>
-            <li><a href={biz.social.instagram} rel="noopener" target="_blank" class="btn btn-ghost !min-h-11 !px-4 !text-base"><Icon name="instagram" /> Instagram</a></li>
-            <li><a href={biz.social.tiktok} rel="noopener" target="_blank" class="btn btn-ghost !min-h-11 !px-4 !text-base"><Icon name="tiktok" /> TikTok</a></li>
-          </ul>
-        </section>
+          </div>
+          <p class="hidden rotate-3 border-2 border-rust px-2 py-1 font-cond text-sm font-bold uppercase tracking-[0.14em] text-rust sm:block">Message</p>
+        </div>
+        <div class="px-6 pb-8 pt-6 sm:px-8">
+          <h2 id="form-title" class="text-5xl leading-none">Drop us a line</h2>
+          <p class="mt-2 text-brown">{biz.contactForm.intro}</p>
 
-        <section aria-labelledby="contact-hours-title" class="rounded-sm border border-white/10 bg-char-2 p-6 text-bone">
+          <div class="mt-5 hidden rounded-sm border-l-4 p-4" role="status" aria-live="polite" tabindex="-1" data-form-status></div>
+
+          <form method="post" action="/api/contact" class="mt-6 grid gap-6" data-contact-form novalidate>
+            <div class="grid gap-6 sm:grid-cols-2">
+              <div>
+                <label for="name" class={label}>Name <span aria-hidden="true">*</span></label>
+                <input id="name" name="name" type="text" autocomplete="name" required maxlength="100" class="ticket-field" />
+              </div>
+              <div>
+                <label for="phone" class={label}>Phone</label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" class="ticket-field" />
+              </div>
+            </div>
+            <div>
+              <label for="email" class={label}>Email <span aria-hidden="true">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" required maxlength="200" class="ticket-field" aria-describedby="email-hint" />
+              <p id="email-hint" class="mt-1 text-sm text-brown">So we can write you back.</p>
+            </div>
+            <fieldset>
+              <legend class={label}>About</legend>
+              <div class="mt-2 flex flex-wrap gap-2">
+                {
+                  ['General question', 'Pricing or cut ticket', 'Pickup', 'European mount', 'Sausage, jerky or sticks', 'Merch', 'Jobs'].map((t, i) => (
+                    <label class="cursor-pointer">
+                      <input type="radio" name="topic" value={t} class="peer sr-only" checked={i === 0} />
+                      <span class="block rounded-full border-2 border-ink/40 px-3 py-1 font-cond text-sm font-bold uppercase tracking-[0.06em] transition peer-checked:border-ink peer-checked:bg-ink peer-checked:text-cream peer-focus-visible:outline peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-rust-deep">{t}</span>
+                    </label>
+                  ))
+                }
+              </div>
+            </fieldset>
+            <div>
+              <label for="message" class={label}>Message <span aria-hidden="true">*</span></label>
+              <textarea id="message" name="message" rows="5" required maxlength="4000" class="ticket-field mt-1"></textarea>
+            </div>
+            <!-- Spam trap: real visitors never see or fill this field. -->
+            <div class="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
+              <label for="company">Company</label>
+              <input id="company" name="company" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+            <input type="hidden" name="started" value="" data-started />
+            <div class="flex flex-col gap-4 border-t-2 border-dashed border-ink/30 pt-6 sm:flex-row sm:items-center sm:justify-between">
+              <p class="text-sm text-brown">* Required. Need an answer today? Call <a href={`tel:${biz.phone.tel}`} class="font-semibold text-rust-deep underline">{biz.phone.display}</a>.</p>
+              <button type="submit" class="btn btn-dark shrink-0" data-submit>Send message <Icon name="arrow" /></button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Address + hours -->
+      <div class="space-y-10">
+        <section aria-labelledby="where-title" class="text-center lg:text-left">
+          <p class="eyebrow">Find us</p>
+          <h2 id="where-title" class="mt-2 text-5xl text-cream">{biz.address.street}</h2>
+          <address class="mt-1 not-italic text-xl text-bone">{biz.address.city}, {biz.address.state} {biz.address.zip}</address>
+          <p class="mt-3 text-bone">{biz.address.note}</p>
+          <a href={biz.directionsUrl} rel="noopener" target="_blank" class="btn btn-primary mt-5"><Icon name="pin" /> Open in Google Maps<span class="sr-only"> (opens Google Maps)</span></a>
+        </section>
+        <section aria-labelledby="contact-hours-title" class="border-t-2 border-blaze/60 pt-8 text-bone">
           <h2 id="contact-hours-title" class="text-4xl text-cream">Hours</h2>
           <div class="mt-4"><HoursTable /></div>
         </section>
       </div>
-
-      <section aria-labelledby="form-title" class="on-light rounded-sm bg-cream p-6 text-ink sm:p-8">
-        <p class="eyebrow">Send a message</p>
-        <h2 id="form-title" class="mt-2 text-4xl sm:text-5xl">Drop us a line</h2>
-        <p class="mt-3 text-brown">{biz.contactForm.intro}</p>
-
-        <div class="mt-5 hidden rounded-sm border-l-4 p-4" role="status" aria-live="polite" tabindex="-1" data-form-status></div>
-
-        <form method="post" action="/api/contact" class="mt-6 grid gap-5" data-contact-form novalidate>
-          <div class="grid gap-5 sm:grid-cols-2">
-            <div>
-              <label for="name" class={label}>Name <span class="text-rust" aria-hidden="true">*</span></label>
-              <input id="name" name="name" type="text" autocomplete="name" required maxlength="100" class={field} />
-            </div>
-            <div>
-              <label for="phone" class={label}>Phone</label>
-              <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" class={field} />
-            </div>
-          </div>
-          <div>
-            <label for="email" class={label}>Email <span class="text-rust" aria-hidden="true">*</span></label>
-            <input id="email" name="email" type="email" autocomplete="email" required maxlength="200" class={field} aria-describedby="email-hint" />
-            <p id="email-hint" class="mt-1 text-sm text-brown">So we can write you back.</p>
-          </div>
-          <div>
-            <label for="topic" class={label}>About</label>
-            <select id="topic" name="topic" class={field}>
-              <option>General question</option>
-              <option>Pricing or cut ticket</option>
-              <option>Pickup</option>
-              <option>European mount</option>
-              <option>Specialty sausage, jerky or snack sticks</option>
-              <option>Merch</option>
-              <option>Jobs</option>
-            </select>
-          </div>
-          <div>
-            <label for="message" class={label}>Message <span class="text-rust" aria-hidden="true">*</span></label>
-            <textarea id="message" name="message" rows="6" required maxlength="4000" class={field}></textarea>
-          </div>
-          <!-- Spam trap: real visitors never see or fill this field. -->
-          <div class="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
-            <label for="company">Company</label>
-            <input id="company" name="company" type="text" tabindex="-1" autocomplete="off" />
-          </div>
-          <input type="hidden" name="started" value="" data-started />
-          <p class="text-sm text-brown"><span class="text-rust" aria-hidden="true">*</span> Required</p>
-          <div>
-            <button type="submit" class="btn btn-dark w-full sm:w-auto" data-submit>Send message <Icon name="arrow" /></button>
-          </div>
-          <p class="text-sm text-brown">Need an answer today? Calling is fastest: <a href={`tel:${biz.phone.tel}`} class="font-semibold text-rust-deep underline">{biz.phone.display}</a>.</p>
-        </form>
-      </section>
     </div>
 
     <div class="container-x pb-20">
