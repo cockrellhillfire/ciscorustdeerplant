@@ -1,0 +1,29 @@
+---
+import { biz } from '../lib/business';
+import Icon from './Icon.astro';
+interface Props {
+  limit?: number;
+}
+const { limit = 6 } = Astro.props;
+const reviews = biz.reviews.slice(0, limit);
+---
+
+<ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+  {
+    reviews.map((r, i) => (
+      <li class="reveal" style={`transition-delay:${(i % 3) * 80}ms`}>
+        <figure class="flex h-full flex-col rounded-sm border border-brown/25 bg-cream p-6 text-ink shadow-[0_12px_30px_-22px_rgb(0_0_0/0.6)]">
+          <div class="flex gap-0.5 text-rust" aria-hidden="true">
+            {[0, 1, 2, 3, 4].map(() => <Icon name="star" class="h-4 w-4 fill-current" />)}
+          </div>
+          <blockquote class="mt-4 flex-1 text-[1.02rem] leading-relaxed">
+            <p>“{r.text}”</p>
+          </blockquote>
+          <figcaption class="mt-5 font-cond text-base font-bold uppercase tracking-[0.1em] text-rust-deep">
+            {r.name} <span class="font-semibold normal-case tracking-normal text-brown">· Facebook review</span>
+          </figcaption>
+        </figure>
+      </li>
+    ))
+  }
+</ul>

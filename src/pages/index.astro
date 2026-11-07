@@ -1,0 +1,339 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import Reviews from '../components/Reviews.astro';
+import HoursTable from '../components/HoursTable.astro';
+import MapEmbed from '../components/MapEmbed.astro';
+import { biz, photo, formatTime } from '../lib/business';
+
+const hero = photo('bull-elk-at-sunset.jpg');
+const serviceImages = [
+  photo('whitetail-buck-at-the-door.jpg'),
+  photo('scimitar-oryx.jpg'),
+  photo('jalapeno-cheese-summer-sausage.jpg'),
+  photo('elk-european-mount.jpg'),
+];
+const smokehouse = photo('jerky-in-the-smoker.jpg');
+const strip = [
+  'giant-whitetail-buck.jpg',
+  'sausage-rings-on-racks.jpg',
+  'tall-whitetail-euro.jpg',
+  'axis-buck-in-velvet.jpg',
+  'axis-steak-medium-rare.jpg',
+  'two-aoudad-rams.jpg',
+  'pitmaster-at-the-smoker.jpg',
+  'youth-hunter-bull-elk.jpg',
+].map(photo);
+const firstHarvest = photo('youth-hunter-red-stag.jpg');
+
+const steps = [
+  { icon: 'truck', title: 'Bring it to the deck', text: `${biz.dropOff.where}. Open ${biz.hours.summary.toLowerCase()} in season. After hours, use the tag drop-off.` },
+  { icon: 'ticket', title: 'Fill out your cut ticket', text: 'Pick your steaks, roasts and grind, plus any specialty sausage, jerky or snack sticks. We can help you choose.' },
+  { icon: 'cash', title: 'Pay the basics up front', text: 'Basic processing, cut fee, and any euro or cape fee are paid at drop-off. The rest is due at pick-up.' },
+  { icon: 'snowflake', title: "We call, you pick up", text: `We'll call or text when it's ready. Pick up within ${biz.pickup.freezerFreeDays} days, packaged, boxed and ready for the freezer.` },
+] as const;
+const hoursSummary = `${formatTime(biz.hours.days[0].open)} – ${formatTime(biz.hours.days[0].close)}`;
+---
+
+<BaseLayout
+  fullTitle
+  title="Rust Deer Plant | Deer & Wild Game Processing in Cisco, TX"
+  description="Family-owned deer and wild game processing in Cisco, Texas. Whitetail, mule deer, elk, hogs and exotics, smoked sausage and jerky, and European mounts. Open 9 AM–9 PM daily in season."
+>
+  <!-- Hero -->
+  <section class="relative isolate flex min-h-[min(88svh,52rem)] items-end overflow-hidden bg-ink">
+    <Picture
+      src={hero.src}
+      alt={hero.alt}
+      formats={['avif', 'webp']}
+      widths={[640, 960, 1280, 1600, 2016]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="absolute inset-0 -z-20 h-full w-full object-cover object-[62%_50%]"
+    />
+    <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-ink/55 to-ink/10" aria-hidden="true"></div>
+    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-ink/85 via-ink/30 to-transparent" aria-hidden="true"></div>
+
+    <div class="container-x pb-12 pt-28 sm:pb-16 lg:pb-20">
+      <p class="script animate-rise text-3xl text-blaze sm:text-4xl">{biz.tagline}</p>
+      <h1 class="rough-text mt-3 max-w-4xl animate-rise text-[3.3rem] text-cream [animation-delay:80ms] sm:text-7xl lg:text-[6.5rem]">
+        Wild game processing in Cisco, Texas
+      </h1>
+      <p class="mt-5 max-w-xl animate-rise text-lg text-bone [animation-delay:160ms] sm:text-xl">
+        Deer, hogs and exotics, cut the way you want. Smoked sausage, jerky and euros of all kinds. Family-run on Highway 6 since 2021.
+      </p>
+      <div class="mt-8 flex animate-rise flex-col gap-3 [animation-delay:240ms] sm:flex-row sm:flex-wrap">
+        <a href={`tel:${biz.phone.tel}`} class="btn btn-primary"><Icon name="phone" /> Call now</a>
+        <a href={biz.directionsUrl} class="btn btn-ghost" rel="noopener" target="_blank"
+          ><Icon name="pin" /> Get directions<span class="sr-only"> (opens Google Maps)</span></a
+        >
+        <a href="#hours" class="btn btn-ghost"><Icon name="clock" /> Hours</a>
+      </div>
+      <p class="mt-6 flex animate-rise items-center gap-2 font-cond text-base font-semibold uppercase tracking-[0.1em] text-bone [animation-delay:320ms]" data-open-status data-season={biz.season.status} data-hours={JSON.stringify(biz.hours.days)}>
+        <span class="h-2.5 w-2.5 rounded-full bg-blaze" data-open-dot aria-hidden="true"></span>
+        <span data-open-text>Open {hoursSummary}, seven days a week · {biz.season.months}</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="grain section bg-char" aria-labelledby="services-title">
+    <div class="container-x">
+      <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div class="reveal">
+          <p class="eyebrow">What we do</p>
+          <h2 id="services-title" class="mt-3 text-5xl text-cream sm:text-6xl">From the deck to your freezer</h2>
+        </div>
+        <a href="/services/" class="reveal btn btn-ghost self-start md:self-auto">See full pricing <Icon name="arrow" /></a>
+      </div>
+      <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          biz.services.map((s, i) => (
+            <li class="reveal" style={`transition-delay:${i * 70}ms`}>
+              <a href={s.href} class="group flex h-full flex-col overflow-hidden rounded-sm border border-white/10 bg-char-2 shadow-[var(--shadow-card)] transition hover:border-blaze/70">
+                <div class="relative aspect-[4/3] overflow-hidden">
+                  <Picture
+                    src={serviceImages[i].src}
+                    alt={serviceImages[i].alt}
+                    formats={['avif', 'webp']}
+                    widths={[400, 640, 800]}
+                    sizes="(min-width: 1024px) 18rem, (min-width: 640px) 50vw, 100vw"
+                    class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-char-2 via-transparent" aria-hidden="true" />
+                </div>
+                <div class="flex flex-1 flex-col p-5">
+                  <h3 class="text-3xl text-cream">{s.title}</h3>
+                  <p class="mt-2 flex-1 text-[0.98rem] text-bone">{s.text}</p>
+                  <span class="mt-4 inline-flex items-center gap-1.5 font-cond text-sm font-bold uppercase tracking-[0.12em] text-blaze">
+                    Prices <Icon name="arrow" class="h-4 w-4 transition group-hover:translate-x-1" />
+                  </span>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Smokehouse -->
+  <section class="relative overflow-hidden bg-ink" aria-labelledby="smokehouse-title">
+    <div class="grid lg:grid-cols-2">
+      <div class="relative min-h-[22rem] lg:min-h-full">
+        <Picture
+          src={smokehouse.src}
+          alt={smokehouse.alt}
+          formats={['avif', 'webp']}
+          widths={[640, 960, 1280]}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/70 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-ink" aria-hidden="true"></div>
+      </div>
+      <div class="grain section px-4 sm:px-8 lg:px-14">
+        <div class="max-w-xl">
+          <p class="eyebrow reveal">From the smokehouse</p>
+          <h2 id="smokehouse-title" class="reveal mt-3 text-5xl text-cream sm:text-6xl">Made from your harvest</h2>
+          <p class="reveal mt-5 text-lg text-bone">
+            Add specialty sausage, jerky or snack sticks to your cut ticket and we'll smoke them right here. {biz.flavors.note}
+          </p>
+          <div class="reveal mt-8 grid gap-8 sm:grid-cols-2">
+            <div>
+              <h3 class="font-cond text-lg font-bold uppercase tracking-[0.12em] text-blaze">Link sausage</h3>
+              <ul class="mt-3 space-y-1.5 text-cream">{biz.flavors.linkSausage.map((f) => <li>{f.name}</li>)}</ul>
+            </div>
+            <div>
+              <h3 class="font-cond text-lg font-bold uppercase tracking-[0.12em] text-blaze">Summer sausage</h3>
+              <ul class="mt-3 space-y-1.5 text-cream">{biz.flavors.summerSausage.map((f) => <li>{f.name}</li>)}</ul>
+              <h3 class="mt-6 font-cond text-lg font-bold uppercase tracking-[0.12em] text-blaze">Jerky & snack sticks</h3>
+              <ul class="mt-3 space-y-1.5 text-cream">
+                {biz.flavors.jerky.map((f) => <li>{f.name} jerky</li>)}
+                {biz.flavors.snackSticks.map((f) => <li>{f.name} sticks <span class="ml-1 rounded-sm bg-blaze px-1.5 py-0.5 align-middle font-cond text-xs font-bold uppercase tracking-wider text-ink">New</span></li>)}
+              </ul>
+            </div>
+          </div>
+          <p class="reveal mt-8 inline-flex items-center gap-2 rounded-sm border border-blaze/50 px-4 py-2 font-cond text-base font-bold uppercase tracking-[0.1em] text-cream">
+            <Icon name="flame" class="h-5 w-5 text-blaze" /> {biz.pricing.minimum}
+          </p>
+          <div class="reveal mt-8">
+            <a href="/services/#link-sausage" class="btn btn-primary">Sausage & jerky prices <Icon name="arrow" /></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="on-light grain grain-light section bg-cream text-ink" aria-labelledby="how-title">
+    <div class="container-x">
+      <div class="reveal max-w-2xl">
+        <p class="eyebrow">How drop-off works</p>
+        <h2 id="how-title" class="mt-3 text-5xl text-ink sm:text-6xl">Four steps. No guesswork.</h2>
+      </div>
+      <ol class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          steps.map((s, i) => (
+            <li class="reveal relative rounded-sm border border-brown/25 bg-bone/60 p-6" style={`transition-delay:${i * 70}ms`}>
+              <span class="font-display text-6xl text-rust/25" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <Icon name={s.icon} class="absolute right-6 top-7 h-8 w-8 text-rust" />
+              <h3 class="mt-2 text-2xl text-ink">
+                <span class="sr-only">Step {i + 1}: </span>
+                {s.title}
+              </h3>
+              <p class="mt-2 text-brown">{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="reveal mt-10 flex flex-col gap-3 sm:flex-row">
+        <a href="/drop-off/" class="btn btn-dark">Read the drop-off guide <Icon name="arrow" /></a>
+        <a href="/drop-off/#after-hours" class="btn border-ink/30 text-ink hover:border-ink">After-hours drop-off</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo strip -->
+  <section class="bg-ink py-14" aria-labelledby="strip-title">
+    <div class="container-x flex items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow">{biz.hashtag}</p>
+        <h2 id="strip-title" class="mt-2 text-4xl text-cream sm:text-5xl">Fresh off the deck</h2>
+      </div>
+      <a href="/gallery/" class="hidden shrink-0 items-center gap-2 font-cond font-bold uppercase tracking-[0.12em] text-blaze hover:text-blaze-hot sm:inline-flex">
+        View the gallery <Icon name="arrow" />
+      </a>
+    </div>
+    <ul class="mt-8 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-4 sm:px-6 [scrollbar-color:var(--color-char-3)_transparent]" tabindex="0" aria-label="Recent photos, scrollable">
+      {
+        strip.map((p) => (
+          <li class="w-[68vw] max-w-[19rem] shrink-0 snap-start">
+            <a href="/gallery/" class="block overflow-hidden rounded-sm">
+              <Picture src={p.src} alt={p.alt} formats={['avif', 'webp']} widths={[320, 480, 640]} sizes="(min-width: 640px) 19rem, 68vw" class="aspect-[4/5] h-full w-full object-cover transition duration-500 hover:scale-105" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="container-x sm:hidden">
+      <a href="/gallery/" class="btn btn-ghost mt-4 w-full">View the gallery <Icon name="arrow" /></a>
+    </div>
+  </section>
+
+  <!-- First harvest + discounts -->
+  <section class="grain section bg-char" aria-labelledby="club-title">
+    <div class="container-x grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
+      <div class="reveal relative">
+        <Picture src={firstHarvest.src} alt={firstHarvest.alt} formats={['avif', 'webp']} widths={[480, 720, 960]} sizes="(min-width: 1024px) 40vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover sm:aspect-[5/4] lg:aspect-[4/5]" />
+        <div class="absolute -bottom-5 left-5 rotate-[-3deg] rounded-sm bg-blaze px-4 py-2 font-display text-2xl uppercase text-ink shadow-lg">First Harvest Club</div>
+      </div>
+      <div>
+        <p class="eyebrow reveal">Traditions worth keeping</p>
+        <h2 id="club-title" class="reveal mt-3 text-5xl text-cream sm:text-6xl">First deer? Let's celebrate.</h2>
+        <p class="reveal mt-5 text-lg text-bone">{biz.firstHarvest.text}</p>
+        <p class="reveal mt-4 text-bone">
+          Our favorite part of every season is seeing young hunters roll up on the deck with their family. Take those kids to the woods. It's a tradition that needs to be kept alive.
+        </p>
+        <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+          {
+            biz.discounts.map((d) => (
+              <li class="reveal rounded-sm border border-white/10 bg-char-2 p-5">
+                <Icon name="shield" class="h-7 w-7 text-blaze" />
+                <h3 class="mt-3 text-2xl text-cream">{d.title}</h3>
+                <p class="mt-1 text-bone">{d.text}</p>
+              </li>
+            ))
+          }
+          <li class="reveal rounded-sm border border-white/10 bg-char-2 p-5">
+            <Icon name="tag" class="h-7 w-7 text-blaze" />
+            <h3 class="mt-3 text-2xl text-cream">Saturday specialty sales</h3>
+            <p class="mt-1 text-bone">{biz.saturdaySales.text}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews -->
+  <section class="section bg-ink" aria-labelledby="reviews-title">
+    <div class="container-x">
+      <div class="reveal flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div>
+          <p class="eyebrow">What hunters say</p>
+          <h2 id="reviews-title" class="mt-3 text-5xl text-cream sm:text-6xl">Down-home friendly folks</h2>
+        </div>
+        <p class="flex items-center gap-2 font-cond text-lg font-semibold uppercase tracking-[0.08em] text-bone">
+          <Icon name="star" class="h-5 w-5 fill-current text-blaze" />
+          {biz.reviewSummary}
+        </p>
+      </div>
+      <div class="mt-10"><Reviews limit={6} /></div>
+      <p class="mt-8">
+        <a href={`${biz.social.facebook}/reviews`} rel="noopener" target="_blank" class="inline-flex items-center gap-2 font-cond font-bold uppercase tracking-[0.12em] text-blaze hover:text-blaze-hot">
+          Read all reviews on Facebook <Icon name="external" class="h-4 w-4" /><span class="sr-only">(opens Facebook)</span>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Visit -->
+  <section id="hours" class="grain section border-t border-white/10 bg-char" aria-labelledby="visit-title">
+    <div class="container-x grid gap-10 lg:grid-cols-[1fr_1.4fr]">
+      <div class="reveal">
+        <p class="eyebrow">Come see us</p>
+        <h2 id="visit-title" class="mt-3 text-5xl text-cream sm:text-6xl">Hours & directions</h2>
+        <p class="mt-4 text-bone">{biz.address.note}</p>
+        <div class="mt-8 rounded-sm border border-white/10 bg-char-2 p-5 text-bone">
+          <HoursTable />
+        </div>
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+          <a href={`tel:${biz.phone.tel}`} class="btn btn-primary"><Icon name="phone" /> {biz.phone.display}</a>
+          <a href={biz.directionsUrl} class="btn btn-ghost" rel="noopener" target="_blank"><Icon name="pin" /> Directions<span class="sr-only"> (opens Google Maps)</span></a>
+        </div>
+      </div>
+      <MapEmbed class="reveal min-h-[24rem] lg:min-h-full" />
+    </div>
+  </section>
+
+  <script>
+    // Live "open now" status in Cisco, TX time. Falls back to the static hours text without JS.
+    const wrap = document.querySelector<HTMLElement>('[data-open-status]');
+    const el = document.querySelector('[data-open-text]');
+    const dot = document.querySelector<HTMLElement>('[data-open-dot]');
+    if (wrap && el && wrap.dataset.season === 'open') {
+      const days: { day: string; open: string; close: string }[] = JSON.parse(wrap.dataset.hours ?? '[]');
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/Chicago',
+        weekday: 'long',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hourCycle: 'h23',
+      }).formatToParts(new Date());
+      const get = (t: string) => parts.find((p) => p.type === t)?.value ?? '';
+      const [y, m, d] = [Number(get('year')), Number(get('month')), Number(get('day'))];
+      // Holiday closures: Thanksgiving (4th Thursday of November), Christmas Eve, Christmas Day.
+      const firstThu = ((4 - new Date(y, 10, 1).getDay() + 7) % 7) + 1;
+      const holiday = (m === 11 && d === firstThu + 21) || (m === 12 && (d === 24 || d === 25));
+      const day = holiday ? undefined : days.find((x) => x.day === get('weekday'));
+      const mins = Number(get('hour')) * 60 + Number(get('minute'));
+      if (holiday) el.textContent = 'Closed today for the holiday · drop-off on the back deck is open';
+      const toMin = (s: string) => Number(s.slice(0, 2)) * 60 + Number(s.slice(3, 5));
+      const fmt = (s: string) => {
+        const h = Number(s.slice(0, 2));
+        return `${h % 12 || 12} ${h >= 12 ? 'PM' : 'AM'}`;
+      };
+      if (day) {
+        const open = mins >= toMin(day.open) && mins < toMin(day.close);
+        el.textContent = open
+          ? `Open now · until ${fmt(day.close)} today`
+          : `Closed now · ${mins < toMin(day.open) ? `opens ${fmt(day.open)} today` : `opens ${fmt(day.open)} tomorrow`} · after-hours drop-off on the back deck`;
+        if (dot) dot.style.background = open ? '#4ade80' : 'var(--color-muted)';
+      }
+    }
+  </script>
+</BaseLayout>

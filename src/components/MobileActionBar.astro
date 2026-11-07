@@ -1,0 +1,27 @@
+---
+import { biz } from '../lib/business';
+import Icon from './Icon.astro';
+---
+
+<nav
+  aria-label="Quick actions"
+  class="fixed inset-x-0 bottom-0 z-30 border-t border-white/10 bg-ink/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
+>
+  <ul class="grid grid-cols-3">
+    <li>
+      <a href={`tel:${biz.phone.tel}`} class="flex flex-col items-center gap-1 bg-blaze py-2.5 font-cond text-sm font-bold uppercase tracking-[0.08em] text-ink">
+        <Icon name="phone" class="h-5 w-5" />Call
+      </a>
+    </li>
+    <li>
+      <a href={biz.directionsUrl} rel="noopener" target="_blank" class="flex flex-col items-center gap-1 py-2.5 font-cond text-sm font-bold uppercase tracking-[0.08em] text-cream">
+        <Icon name="pin" class="h-5 w-5 text-blaze" />Directions<span class="sr-only"> (opens Google Maps)</span>
+      </a>
+    </li>
+    <li>
+      <a href="/drop-off/#hours" class="flex flex-col items-center gap-1 py-2.5 font-cond text-sm font-bold uppercase tracking-[0.08em] text-cream">
+        <Icon name="clock" class="h-5 w-5 text-blaze" />Hours
+      </a>
+    </li>
+  </ul>
+</nav>

@@ -1,0 +1,42 @@
+---
+import { formatPrice } from '../lib/business';
+interface Item {
+  item: string;
+  price: number | null;
+  perLb?: boolean;
+  note?: string;
+  badge?: string;
+}
+interface Props {
+  id: string;
+  title: string;
+  items?: Item[];
+  class?: string;
+}
+const { id, title, items = [], class: className = '' } = Astro.props;
+---
+
+<section id={id} class:list={['reveal scroll-mt-40 overflow-hidden rounded-sm border border-brown/25 bg-[#fbf7ef] shadow-[0_14px_30px_-24px_rgb(0_0_0/0.7)]', className]} aria-labelledby={`${id}-title`}>
+  <h2 id={`${id}-title`} class="bg-rust px-5 py-3 font-display text-[1.7rem] uppercase tracking-[0.02em] text-cream">{title}</h2>
+  <div class="px-5 pb-4 pt-2">
+    <slot name="before" />
+    {
+      items.length > 0 && (
+        <ul>
+          {items.map((it) => (
+            <li class="price-row">
+              <span class="font-semibold text-ink">
+                {it.item}
+                {it.badge && <span class="ml-1.5 rounded-sm bg-blaze px-1.5 py-0.5 align-middle font-cond text-xs font-bold uppercase tracking-wider text-ink">{it.badge}</span>}
+                {it.note && it.price !== null && <span class="block text-sm font-normal text-brown">{it.note}</span>}
+              </span>
+              <span class="leader" aria-hidden="true" />
+              <span class:list={['amount', it.price === null ? 'text-base italic text-rust-deep' : 'text-ink']}>{formatPrice(it.price, it.perLb, it.note)}</span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    <slot />
+  </div>
+</section>

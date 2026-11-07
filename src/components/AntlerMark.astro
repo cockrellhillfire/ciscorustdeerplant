@@ -1,0 +1,24 @@
+---
+/** The Rust Deer Plant antler mark, redrawn as a clean vector from the shop's logo. */
+interface Props {
+  class?: string;
+  label?: string;
+}
+const { class: className = 'h-10 w-10', label } = Astro.props;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 748 756.2"
+  class={className}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  focusable="false"
+>
+  <path
+    fill="currentColor"
+    fill-rule="evenodd"
+    d="M142 5 L125 0 L0 308 L12.2 315.3 L4.5 327.8 L331.8 527.4 L260.8 570.7 L374 756.2 L487.2 570.7 L416.2 527.4 L743.5 327.8 L735.8 315.3 L748 308 L623 0 L606 5 L680 310 L683.5 312.8 L567 383.8 L485 198 L471 205 L514.7 415.8 L374 501.6 L233.3 415.8 L277 205 L263 198 L181 383.8 L64.5 312.8 L68 310Z M321.2 585.3 L374 553.1 L426.8 585.3 L374 671.8Z"
+  ></path>
+</svg>

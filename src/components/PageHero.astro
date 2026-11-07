@@ -1,0 +1,40 @@
+---
+import { Picture } from 'astro:assets';
+import type { Photo } from '../lib/business';
+import AntlerMark from './AntlerMark.astro';
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  photo?: Photo;
+  position?: string;
+}
+const { eyebrow, title, lead, photo, position = 'center' } = Astro.props;
+---
+
+<section class="grain relative isolate overflow-hidden bg-char">
+  {
+    photo && (
+      <Picture
+        src={photo.src}
+        alt=""
+        formats={['avif', 'webp']}
+        widths={[640, 960, 1440, 1920]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="absolute inset-0 -z-20 h-full w-full object-cover opacity-45"
+        style={`object-position:${position}`}
+      />
+    )
+  }
+  <div class="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/85 to-ink/30" aria-hidden="true"></div>
+  <AntlerMark class="pointer-events-none absolute -bottom-16 right-[-3rem] -z-10 hidden h-80 w-80 text-blaze/10 md:block" />
+  <div class="container-x py-16 sm:py-20 lg:py-24">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1 class="mt-3 max-w-3xl text-5xl text-cream sm:text-6xl lg:text-7xl">{title}</h1>
+    <div class="rule-orange mt-6"></div>
+    {lead && <p class="mt-6 max-w-2xl text-lg text-bone sm:text-xl">{lead}</p>}
+    <slot />
+  </div>
+</section>

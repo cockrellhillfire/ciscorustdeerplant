@@ -1,0 +1,226 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import HoursTable from '../components/HoursTable.astro';
+import Icon from '../components/Icon.astro';
+import { biz, photo } from '../lib/business';
+
+const deck = photo('whitetail-buck-at-the-shop-door.jpg');
+const careTips = [
+  { title: 'Field dress fast', text: 'Get the guts out as soon as you can, especially on a warm day. Heat is the enemy of good venison. If you would rather we do it, bring the animal during business hours for the $75 gut fee.' },
+  { title: 'Cool it down', text: 'Prop the body cavity open so air moves through it, and keep it in the shade. On warm days, get it to us or into a cooler the same day.' },
+  { title: 'Keep it clean and dry', text: 'Keep dirt, hair and water out of the cavity. If you ice it, keep the ice in bags so the meat does not sit in meltwater.' },
+  { title: 'Leave the hide on', text: 'There is no need to skin it. The hide protects the meat on the drive in, and our crew skins every animal here.' },
+  { title: 'Watch the shot', text: 'Tell us where you hit it. Bloodshot or gut-shot meat gets trimmed, so knowing ahead helps us plan your cuts.' },
+  { title: 'Want a euro or a mount?', text: 'Let us know at drop-off before anything is cut. Cape fees are $45, or $60 for a large cape. Do not cut the throat if you plan to cape it.' },
+];
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: biz.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<BaseLayout
+  title="Drop-Off Guide"
+  description="How to drop off your deer, hog or exotic at Rust Deer Plant in Cisco, TX. Open 9 AM–9 PM daily October–January, after-hours drop-off on the back deck, payment policy and field care tips."
+  jsonLd={[faqSchema]}
+>
+  <PageHero
+    eyebrow="Before you head our way"
+    title="Drop-Off Guide"
+    lead="Everything you need to know before you pull up: hours, where to go, what to bring, how payment works, and how to get your animal here in good shape."
+    photo={photo('check-in-area.jpg')}
+  />
+
+  <!-- Quick facts -->
+  <section class="on-light grain grain-light bg-cream text-ink" aria-label="Quick facts">
+    <div class="container-x grid gap-px overflow-hidden py-10 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        [
+          { icon: 'clock', k: 'Hours', v: `${biz.hours.summary}`, s: biz.season.months },
+          { icon: 'truck', k: 'Where', v: 'Back deck', s: biz.dropOff.where },
+          { icon: 'cash', k: 'Pay at drop-off', v: 'Basic + cut fee', s: 'Plus any euro or cape fee' },
+          { icon: 'snowflake', k: 'Pick up within', v: `${biz.pickup.freezerFreeDays} days`, s: `Then $${biz.pickup.freezerFeePerDay.toFixed(2)}/day freezer rent` },
+        ].map((f) => (
+          <div class="reveal flex gap-4 p-4">
+            <Icon name={f.icon as 'clock'} class="mt-1 h-8 w-8 shrink-0 text-rust" />
+            <div>
+              <p class="font-cond text-sm font-bold uppercase tracking-[0.14em] text-rust">{f.k}</p>
+              <p class="font-display text-2xl uppercase">{f.v}</p>
+              <p class="text-sm text-brown">{f.s}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <div class="grain bg-char">
+    <div class="container-x section grid gap-12 lg:grid-cols-[1.35fr_1fr]">
+      <div class="space-y-16">
+        <!-- Hours -->
+        <section id="hours" class="scroll-mt-28" aria-labelledby="hours-title">
+          <p class="eyebrow">Season hours</p>
+          <h2 id="hours-title" class="mt-2 text-5xl text-cream">When we're open</h2>
+          <p class="mt-4 text-bone">
+            We're a seasonal plant, open {biz.season.months}. During the season we're here {biz.hours.summary}. {biz.hours.offSeason}
+          </p>
+          <div class="mt-6 rounded-sm border border-white/10 bg-char-2 p-5 text-bone">
+            <HoursTable />
+          </div>
+          {
+            biz.season.lastPickupDate && biz.season.lastPickupDate !== 'TODO' && (
+              <p class="mt-4 font-semibold text-cream">Last day for pickups this season: {biz.season.lastPickupDate}.</p>
+            )
+          }
+        </section>
+
+        <!-- Where -->
+        <section id="where" class="scroll-mt-28" aria-labelledby="where-title">
+          <p class="eyebrow">Where to go</p>
+          <h2 id="where-title" class="mt-2 text-5xl text-cream">Pull around back to the deck</h2>
+          <p class="mt-4 text-bone">
+            {biz.dropOff.where}. We're at {biz.address.street} in {biz.address.city}. {biz.address.note}
+          </p>
+          <figure class="mt-6 overflow-hidden rounded-sm">
+            <Picture src={deck.src} alt={deck.alt} formats={['avif', 'webp']} widths={[480, 720, 960]} sizes="(min-width: 1024px) 42rem, 100vw" class="aspect-[4/3] w-full object-cover object-[50%_30%]" />
+            <figcaption class="bg-ink px-4 py-2 text-sm text-muted">The drop-off deck, where every harvest gets its picture taken.</figcaption>
+          </figure>
+          <a href={biz.directionsUrl} rel="noopener" target="_blank" class="btn btn-primary mt-6"><Icon name="pin" /> Get directions<span class="sr-only"> (opens Google Maps)</span></a>
+        </section>
+
+        <!-- After hours -->
+        <section id="after-hours" class="scroll-mt-28" aria-labelledby="after-title">
+          <p class="eyebrow">After hours & holidays</p>
+          <h2 id="after-title" class="mt-2 text-5xl text-cream">Drop off any time</h2>
+          <p class="mt-4 text-bone">Hunting late, or over the holidays? Use the drop-off system on the back deck. Instructions are posted there too.</p>
+          <ol class="mt-6 space-y-3">
+            {
+              biz.dropOff.afterHours.map((s, i) => (
+                <li class="flex gap-4 rounded-sm border border-white/10 bg-char-2 p-4">
+                  <span class="font-display text-3xl leading-none text-blaze" aria-hidden="true">{i + 1}</span>
+                  <span class="text-bone">{s}</span>
+                </li>
+              ))
+            }
+          </ol>
+          <p class="mt-5 flex gap-3 rounded-sm border-l-4 border-blaze bg-ink p-4 text-cream">
+            <Icon name="flame" class="mt-0.5 h-5 w-5 shrink-0 text-blaze" />
+            <span><strong>${biz.dropOff.gutsFeeAfterHours} fee:</strong> {biz.dropOff.gutsFeeAfterHoursNote.replace(/^An extra \$100 is charged/, 'Charged')}</span>
+          </p>
+        </section>
+
+        <!-- Payment -->
+        <section id="payment" class="scroll-mt-28" aria-labelledby="pay-title">
+          <p class="eyebrow">Payment</p>
+          <h2 id="pay-title" class="mt-2 text-5xl text-cream">What you pay, and when</h2>
+          <div class="mt-6 grid gap-4 sm:grid-cols-2">
+            <div class="rounded-sm border border-white/10 bg-char-2 p-5">
+              <h3 class="text-2xl text-blaze">At drop-off</h3>
+              <ul class="mt-3 space-y-1.5 text-bone">
+                <li>Basic processing</li>
+                <li>Your cut fee</li>
+                <li>Any euro or cape fee</li>
+              </ul>
+            </div>
+            <div class="rounded-sm border border-white/10 bg-char-2 p-5">
+              <h3 class="text-2xl text-blaze">At pick-up</h3>
+              <p class="mt-3 text-bone">The remaining balance, including specialty sausage, jerky and snack sticks.</p>
+            </div>
+          </div>
+          <p class="mt-4 text-bone">We take {biz.payment.methods.join(', ').toLowerCase()}. {biz.payment.cashNote}</p>
+          <p class="mt-2 text-bone">{biz.discounts[0].title}: {biz.discounts[0].text}</p>
+        </section>
+
+        <!-- Field care -->
+        <section id="field-care" class="scroll-mt-28" aria-labelledby="care-title">
+          <p class="eyebrow">Field care</p>
+          <h2 id="care-title" class="mt-2 text-5xl text-cream">Get it here in good shape</h2>
+          <p class="mt-4 text-bone">Great sausage and steaks start in the field. A few habits make a big difference in what comes back to you.</p>
+          <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+            {
+              careTips.map((t) => (
+                <li class="reveal rounded-sm border border-white/10 bg-char-2 p-5">
+                  <h3 class="text-2xl text-cream">{t.title}</h3>
+                  <p class="mt-2 text-[0.98rem] text-bone">{t.text}</p>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+
+        <!-- Pickup -->
+        <section id="pickup" class="scroll-mt-28" aria-labelledby="pickup-title">
+          <p class="eyebrow">Pick-up</p>
+          <h2 id="pickup-title" class="mt-2 text-5xl text-cream">When it's ready</h2>
+          <p class="mt-4 text-bone">{biz.pickup.freezerNote}</p>
+          <p class="mt-3 text-bone">{biz.pickup.donationNote} Pickup-only hours at the end of the season are posted on <a href={biz.social.facebook} rel="noopener" target="_blank" class="text-cream underline decoration-blaze decoration-2">our Facebook page</a>.</p>
+        </section>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="lg:sticky lg:top-28 lg:self-start" aria-label="What to bring">
+        <div class="rounded-sm bg-cream p-6 text-ink on-light">
+          <p class="eyebrow">Checklist</p>
+          <h2 class="mt-2 text-4xl">What to bring</h2>
+          <ul class="mt-4 space-y-3">
+            {
+              biz.dropOff.bring.map((b) => (
+                <li class="flex gap-3">
+                  <span class="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border-2 border-rust" aria-hidden="true" />
+                  <span>{b}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <div class="mt-6 border-t border-brown/25 pt-5">
+            <h3 class="font-cond text-lg font-bold uppercase tracking-[0.1em] text-rust-deep">Texas tagging & license rules</h3>
+            <p class="mt-1 text-sm text-brown">Rules change from season to season. Check Texas Parks & Wildlife for the current requirements:</p>
+            <ul class="mt-3 space-y-2">
+              {
+                biz.dropOff.tpwdLinks.map((l) => (
+                  <li>
+                    <a href={l.url} rel="noopener" target="_blank" class="inline-flex items-start gap-1.5 font-semibold text-rust-deep underline decoration-rust/40 decoration-2 hover:decoration-rust">
+                      {l.label}
+                      <Icon name="external" class="mt-1 h-4 w-4 shrink-0" />
+                      <span class="sr-only">(opens tpwd.texas.gov)</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+        <div class="mt-6 rounded-sm border border-white/10 bg-char-2 p-6">
+          <h2 class="text-3xl text-cream">Questions?</h2>
+          <p class="mt-2 text-bone">Give us a call before you head our way.</p>
+          <a href={`tel:${biz.phone.tel}`} class="btn btn-primary mt-4 w-full"><Icon name="phone" /> {biz.phone.display}</a>
+          <a href={`tel:${biz.phoneAlt.tel}`} class="btn btn-ghost mt-3 w-full">{biz.phoneAlt.display}</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="on-light grain grain-light section bg-cream text-ink" aria-labelledby="faq-title">
+    <div class="container-x max-w-3xl">
+      <p class="eyebrow">FAQ</p>
+      <h2 id="faq-title" class="mt-2 text-5xl">Common questions</h2>
+      <div class="mt-8 divide-y divide-brown/25 border-y border-brown/25">
+        {
+          biz.faq.map((f) => (
+            <details class="group py-1">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-cond text-xl font-bold uppercase tracking-[0.04em] marker:hidden [&::-webkit-details-marker]:hidden">
+                {f.q}
+                <Icon name="chevron" class="h-6 w-6 shrink-0 text-rust transition group-open:rotate-180" />
+              </summary>
+              <p class="pb-5 text-brown">{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

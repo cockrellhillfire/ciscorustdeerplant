@@ -1,0 +1,88 @@
+---
+import { biz, fullAddress } from '../lib/business';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import HoursTable from './HoursTable.astro';
+import AntlerMark from './AntlerMark.astro';
+const year = new Date().getFullYear();
+const links = [
+  { href: '/services/', label: 'Services & Pricing' },
+  { href: '/drop-off/', label: 'Drop-Off Guide' },
+  { href: '/gallery/', label: 'Gallery' },
+  { href: '/about/', label: 'About' },
+  { href: '/contact/', label: 'Contact' },
+];
+---
+
+<footer id="site-footer" class="grain relative overflow-hidden border-t-4 border-blaze bg-char pb-28 pt-16 md:pb-10">
+  <AntlerMark class="pointer-events-none absolute -right-24 -top-10 h-[30rem] w-[30rem] text-white/[0.03]" />
+  <div class="container-x relative grid gap-12 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr]">
+    <div>
+      <Logo size="lg" />
+      <p class="script mt-5 text-3xl text-blaze">{biz.tagline}</p>
+      <p class="mt-4 max-w-sm text-muted">Family-owned deer and wild game processing in Cisco, Texas. Serving hunters across Eastland County and the Big Country.</p>
+      <ul class="mt-6 flex gap-3" aria-label="Social media">
+        <li>
+          <a href={biz.social.facebook} class="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-cream transition hover:border-blaze hover:text-blaze" rel="noopener" target="_blank">
+            <Icon name="facebook" class="h-5 w-5" label="Rust Deer Plant on Facebook" />
+          </a>
+        </li>
+        <li>
+          <a href={biz.social.instagram} class="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-cream transition hover:border-blaze hover:text-blaze" rel="noopener" target="_blank">
+            <Icon name="instagram" class="h-5 w-5" label="Rust Deer Plant on Instagram" />
+          </a>
+        </li>
+        <li>
+          <a href={biz.social.tiktok} class="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-cream transition hover:border-blaze hover:text-blaze" rel="noopener" target="_blank">
+            <Icon name="tiktok" class="h-5 w-5" label="Rust Deer Plant on TikTok" />
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="eyebrow">Find us</h2>
+      <address class="mt-4 not-italic">
+        <a href={biz.directionsUrl} class="group flex gap-3 text-cream hover:text-blaze" rel="noopener" target="_blank">
+          <Icon name="pin" class="mt-1 h-5 w-5 shrink-0 text-blaze" />
+          <span>{biz.address.street}<br />{biz.address.city}, {biz.address.state} {biz.address.zip}<span class="sr-only"> (opens Google Maps directions)</span></span>
+        </a>
+        <a href={`tel:${biz.phone.tel}`} class="mt-4 flex items-center gap-3 text-cream hover:text-blaze">
+          <Icon name="phone" class="h-5 w-5 shrink-0 text-blaze" />
+          <span class="font-cond text-xl font-bold tracking-wide">{biz.phone.display}</span>
+        </a>
+        <a href={`tel:${biz.phoneAlt.tel}`} class="mt-2 flex items-center gap-3 text-bone hover:text-blaze">
+          <Icon name="phone" class="h-5 w-5 shrink-0 text-blaze/70" />
+          <span>{biz.phoneAlt.display} <span class="text-sm text-muted">({biz.phoneAlt.label.toLowerCase()})</span></span>
+        </a>
+        <a href={`mailto:${biz.email}`} class="mt-4 flex items-center gap-3 break-all text-bone hover:text-blaze">
+          <Icon name="mail" class="h-5 w-5 shrink-0 text-blaze" />
+          <span>{biz.email}</span>
+        </a>
+      </address>
+      <nav aria-label="Footer" class="mt-8">
+        <ul class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+          {links.map((l) => <li><a href={l.href} class="text-bone hover:text-blaze">{l.label}</a></li>)}
+        </ul>
+      </nav>
+    </div>
+
+    <div>
+      <h2 class="eyebrow">Season hours</h2>
+      <div class="mt-4 text-[0.95rem] text-bone">
+        <HoursTable compact />
+      </div>
+    </div>
+  </div>
+
+  <div class="container-x relative mt-14 border-t border-white/10 pt-6">
+    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <p class="flex items-start gap-2 text-sm text-bone">
+        <Icon name="shield" class="mt-0.5 h-5 w-5 shrink-0 text-blaze" />
+        <span><strong class="font-semibold text-cream">This is the official website of Rust Deer Plant.</strong> We are not affiliated with any other site using our name, or with the plant next door at 8911 Highway 6.</span>
+      </p>
+      <p class="shrink-0 text-sm text-muted">&copy; {year} {biz.name} &middot; {biz.hashtag}</p>
+    </div>
+    <p class="sr-only">{fullAddress}</p>
+  </div>
+</footer>

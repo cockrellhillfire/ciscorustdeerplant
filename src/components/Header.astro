@@ -1,0 +1,103 @@
+---
+import { biz } from '../lib/business';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+
+export const nav = [
+  { href: '/services/', label: 'Services & Pricing' },
+  { href: '/drop-off/', label: 'Drop-Off Guide' },
+  { href: '/gallery/', label: 'Gallery' },
+  { href: '/about/', label: 'About' },
+  { href: '/contact/', label: 'Contact' },
+];
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href);
+---
+
+<header class="sticky top-0 z-30 border-b border-white/10 bg-ink/95 backdrop-blur supports-[backdrop-filter]:bg-ink/85">
+  <div class="container-x flex h-[4.5rem] items-center justify-between gap-4">
+    <a href="/" class="shrink-0 rounded-sm" aria-label="Rust Deer Plant home">
+      <Logo />
+    </a>
+
+    <nav aria-label="Main" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class="relative rounded-sm px-3 py-2 font-cond text-[1.05rem] font-semibold uppercase tracking-[0.08em] text-bone transition-colors hover:text-blaze aria-[current=page]:text-blaze"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a href={`tel:${biz.phone.tel}`} class="btn btn-primary !min-h-11 !px-3.5 !text-base sm:!px-4">
+        <Icon name="phone" />
+        <span class="hidden sm:inline">{biz.phone.display}</span>
+        <span class="sm:hidden">Call</span>
+      </a>
+      <button
+        type="button"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-sm border border-white/20 text-cream lg:hidden"
+        aria-controls="mobile-nav"
+        aria-expanded="false"
+        data-menu-toggle
+      >
+        <span class="sr-only">Menu</span>
+        <Icon name="menu" class="h-6 w-6" />
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobile-nav" aria-label="Main" class="hidden border-t border-white/10 bg-ink lg:hidden" data-menu>
+    <ul class="container-x divide-y divide-white/10 py-2">
+      <li>
+        <a href="/" aria-current={path === '/' ? 'page' : undefined} class="flex items-center justify-between py-3.5 font-cond text-xl font-semibold uppercase tracking-[0.06em] text-cream aria-[current=page]:text-blaze">
+          Home <Icon name="right" class="h-5 w-5 text-blaze" />
+        </a>
+      </li>
+      {
+        nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class="flex items-center justify-between py-3.5 font-cond text-xl font-semibold uppercase tracking-[0.06em] text-cream aria-[current=page]:text-blaze"
+            >
+              {item.label}
+              <Icon name="right" class="h-5 w-5 text-blaze" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+  <noscript><style>[data-menu-toggle]{display:none!important}</style></noscript>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  if (toggle && menu) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      menu.classList.toggle('hidden', !open);
+    };
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => e.matches && setOpen(false));
+  }
+</script>

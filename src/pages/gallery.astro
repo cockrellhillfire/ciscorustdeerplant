@@ -1,0 +1,170 @@
+---
+import { Image, getImage } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { photos, categories, photo } from '../lib/business';
+
+// Pre-build a large WebP for the lightbox so it never loads the multi-megabyte originals.
+const groups = await Promise.all(
+  categories.map(async (c) => {
+    const items = await Promise.all(
+      photos
+        .filter((p) => p.category === c.key)
+        .map(async (p) => {
+          const large = await getImage({ src: p.src, width: Math.min(1400, p.src.width), format: 'webp', quality: 72 });
+          return { ...p, large: large.src };
+        }),
+    );
+    return { ...c, items };
+  }),
+).then((g) => g.filter((x) => x.items.length > 0));
+---
+
+<BaseLayout
+  title="Gallery"
+  description="Photos from Rust Deer Plant in Cisco, TX: whitetail, mule deer, elk and exotics on the deck, smoked sausage and jerky, European mounts, and the crew."
+>
+  <PageHero
+    eyebrow="#somelikeitwild"
+    title="Gallery"
+    lead="A few favorites from the deck, the smokehouse and the shop. For daily photos all season long, follow us on Facebook."
+    photo={photo('mount-room.jpg')}
+    position="50% 50%"
+  >
+    <nav aria-label="Gallery sections" class="mt-8">
+      <ul class="flex flex-wrap gap-2">
+        {
+          groups.map((g) => (
+            <li>
+              <a href={`#${g.key}`} class="block rounded-full border border-white/25 bg-ink/50 px-4 py-2 font-cond text-sm font-bold uppercase tracking-[0.1em] text-cream transition hover:border-blaze hover:text-blaze">
+                {g.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </PageHero>
+
+  <div class="grain bg-ink">
+    {
+      groups.map((g, gi) => (
+        <section id={g.key} class:list={['scroll-mt-24 py-14 sm:py-16', gi % 2 === 1 && 'bg-char/70']} aria-labelledby={`${g.key}-title`}>
+          <div class="container-x">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h2 id={`${g.key}-title`} class="text-5xl text-cream">{g.title}</h2>
+                <p class="mt-2 text-bone">{g.blurb}</p>
+              </div>
+              <p class="font-cond text-sm font-bold uppercase tracking-[0.14em] text-muted">{g.items.length} photos</p>
+            </div>
+            <ul class="mt-8 columns-2 gap-3 sm:gap-4 md:columns-3 lg:columns-4">
+              {g.items.map((p, i) => (
+                <li class="mb-3 break-inside-avoid sm:mb-4">
+                  <button
+                    type="button"
+                    class="group relative block w-full overflow-hidden rounded-sm bg-char-2 text-left"
+                    data-lightbox-item
+                    data-full={p.large}
+                    data-alt={p.alt}
+                    aria-label={`View larger: ${p.alt}`}
+                  >
+                    <Image
+                      src={p.src}
+                      alt={p.alt}
+                      widths={[300, 480, 640]}
+                      sizes="(min-width: 1024px) 18rem, (min-width: 768px) 30vw, 48vw"
+                      format="webp"
+                      quality={72}
+                      loading={gi === 0 && i < 4 ? 'eager' : 'lazy'}
+                      class="h-auto w-full transition duration-500 group-hover:scale-[1.04] group-focus-visible:scale-[1.04]"
+                    />
+                    <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/60 to-transparent opacity-0 transition group-hover:opacity-100" aria-hidden="true" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  <dialog
+    class="m-0 h-dvh max-h-none w-screen max-w-none bg-ink/95 p-0 text-cream backdrop:bg-ink/80"
+    aria-label="Photo viewer"
+    data-lightbox
+  >
+    <div class="flex h-full flex-col">
+      <div class="flex items-center justify-between gap-4 px-4 py-3">
+        <p class="font-cond text-sm font-bold uppercase tracking-[0.14em] text-muted" data-lightbox-count aria-live="polite"></p>
+        <button type="button" class="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 hover:border-blaze hover:text-blaze" data-lightbox-close>
+          <Icon name="close" class="h-6 w-6" label="Close photo viewer" />
+        </button>
+      </div>
+      <figure class="relative flex min-h-0 flex-1 flex-col items-center justify-center px-2 sm:px-16">
+        <img src="" alt="" class="max-h-full max-w-full object-contain" data-lightbox-img decoding="async" />
+        <figcaption class="px-4 py-3 text-center text-bone" data-lightbox-caption></figcaption>
+        <button type="button" class="absolute left-2 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-ink/70 hover:text-blaze sm:left-4" data-lightbox-prev>
+          <Icon name="left" class="h-7 w-7" label="Previous photo" />
+        </button>
+        <button type="button" class="absolute right-2 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-ink/70 hover:text-blaze sm:right-4" data-lightbox-next>
+          <Icon name="right" class="h-7 w-7" label="Next photo" />
+        </button>
+      </figure>
+    </div>
+  </dialog>
+
+  <script>
+    const dialog = document.querySelector<HTMLDialogElement>('[data-lightbox]');
+    const items = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-lightbox-item]'));
+    if (dialog && items.length) {
+      const img = dialog.querySelector<HTMLImageElement>('[data-lightbox-img]')!;
+      const cap = dialog.querySelector<HTMLElement>('[data-lightbox-caption]')!;
+      const count = dialog.querySelector<HTMLElement>('[data-lightbox-count]')!;
+      let index = 0;
+      let opener: HTMLElement | null = null;
+
+      const show = (i: number) => {
+        index = (i + items.length) % items.length;
+        const el = items[index];
+        img.src = el.dataset.full ?? '';
+        img.alt = el.dataset.alt ?? '';
+        cap.textContent = el.dataset.alt ?? '';
+        count.textContent = `Photo ${index + 1} of ${items.length}`;
+      };
+      items.forEach((el, i) =>
+        el.addEventListener('click', () => {
+          opener = el;
+          show(i);
+          dialog.showModal();
+        }),
+      );
+      dialog.querySelector('[data-lightbox-close]')?.addEventListener('click', () => dialog.close());
+      dialog.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => show(index - 1));
+      dialog.querySelector('[data-lightbox-next]')?.addEventListener('click', () => show(index + 1));
+      dialog.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') show(index - 1);
+        if (e.key === 'ArrowRight') show(index + 1);
+      });
+      // Click on the dark backdrop closes.
+      dialog.addEventListener('click', (e) => {
+        if (e.target === dialog || (e.target as HTMLElement).tagName === 'FIGURE') dialog.close();
+      });
+      dialog.addEventListener('close', () => {
+        img.removeAttribute('src');
+        opener?.focus();
+      });
+      // Swipe on touch screens.
+      let x0: number | null = null;
+      dialog.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true });
+      dialog.addEventListener('touchend', (e) => {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+        x0 = null;
+      });
+    }
+  </script>
+</BaseLayout>

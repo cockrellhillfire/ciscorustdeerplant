@@ -1,0 +1,106 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import { biz, localBusinessJsonLd } from '../lib/business';
+import SeasonBanner from '../components/SeasonBanner.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileActionBar from '../components/MobileActionBar.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Full title override. By default " | Rust Deer Plant, Cisco TX" is appended. */
+  fullTitle?: boolean;
+  ogImage?: string;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>[];
+}
+
+const { title, description, fullTitle = false, ogImage = '/og-image.jpg', noindex = false, jsonLd = [] } = Astro.props;
+const pageTitle = fullTitle ? title : `${title} | Rust Deer Plant, Cisco TX`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogUrl = new URL(ogImage, Astro.site);
+const schemas = [localBusinessJsonLd(), ...jsonLd];
+---
+
+<!doctype html>
+<html lang="en" class="bg-ink">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#12100e" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={biz.name} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Rust Deer Plant antler logo over a hunter with a bull elk at sunset" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+
+    <Font cssVariable="--font-anton" preload />
+    <Font cssVariable="--font-barlow" preload={[{ weight: '400' }]} />
+    <Font cssVariable="--font-barlow-condensed" preload={[{ weight: '700' }]} />
+    <Font cssVariable="--font-kaushan" />
+
+    {schemas.map((s) => <script is:inline type="application/ld+json" set:html={JSON.stringify(s)} />)}
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <slot name="head" />
+  </head>
+  <body class="min-h-dvh">
+    <a
+      href="#main"
+      class="sr-only z-50 rounded-sm bg-blaze px-4 py-3 font-cond font-bold uppercase text-ink focus:not-sr-only focus:fixed focus:left-3 focus:top-3"
+      >Skip to content</a
+    >
+    <SeasonBanner />
+    <Header />
+    <main id="main" tabindex="-1" class="outline-none">
+      <slot />
+    </main>
+    <Footer />
+    <MobileActionBar />
+
+    <script>
+      // Light scroll-reveal. Content is visible without JS, and motion is skipped with prefers-reduced-motion.
+      const els = document.querySelectorAll<HTMLElement>('.reveal');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || !('IntersectionObserver' in window)) {
+        els.forEach((el) => el.classList.add('is-visible'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+        );
+        els.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

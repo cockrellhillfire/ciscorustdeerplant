@@ -1,0 +1,32 @@
+---
+import { biz, formatTime } from '../lib/business';
+interface Props {
+  light?: boolean;
+  compact?: boolean;
+}
+const { light = false, compact = false } = Astro.props;
+const row = light ? 'border-brown/20' : 'border-white/10';
+---
+
+<div>
+  <table class="w-full text-left" data-hours-table>
+    <caption class="sr-only">Business hours, {biz.hours.seasonNote}</caption>
+    <tbody>
+      {
+        biz.hours.days.map((d) => (
+          <tr class:list={['border-b last:border-0', row]} data-day={d.day}>
+            <th scope="row" class:list={['font-cond font-semibold uppercase tracking-[0.06em]', compact ? 'py-1.5' : 'py-2.5']}>
+              {d.day}
+            </th>
+            <td class:list={['text-right tabular-nums', compact ? 'py-1.5' : 'py-2.5']}>
+              {formatTime(d.open)} – {formatTime(d.close)}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+  <p class:list={['mt-3 text-sm', light ? 'text-brown' : 'text-muted']}>
+    {biz.hours.seasonNote} Closed {biz.hours.holidayClosures.join(', ').replace(/, ([^,]*)$/, ' and $1')}. {biz.hours.holidayNote}
+  </p>
+</div>

@@ -1,0 +1,26 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { biz, photo } from '../lib/business';
+const bg = photo('mule-deer-at-night.jpg');
+---
+
+<BaseLayout title="Page not found" description="This page got away. Head back to Rust Deer Plant, deer and wild game processing in Cisco, Texas." noindex>
+  <section class="relative isolate flex min-h-[75svh] items-center overflow-hidden bg-ink">
+    <Picture src={bg.src} alt="" formats={['avif', 'webp']} widths={[640, 1280]} sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover opacity-30" />
+    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/80 to-ink/30" aria-hidden="true"></div>
+    <div class="container-x py-20">
+      <p class="eyebrow">Error 404</p>
+      <h1 class="rough-text mt-3 max-w-3xl text-6xl text-cream sm:text-8xl">This one got away</h1>
+      <p class="script mt-4 text-3xl text-blaze">Looks like the trail went cold.</p>
+      <p class="mt-6 max-w-xl text-lg text-bone">The page you're looking for isn't here. It may have moved, or the link may be wrong. Try one of these instead:</p>
+      <ul class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <li><a href="/" class="btn btn-primary">Home <Icon name="arrow" /></a></li>
+        <li><a href="/services/" class="btn btn-ghost">Prices</a></li>
+        <li><a href="/drop-off/" class="btn btn-ghost">Drop-off guide</a></li>
+        <li><a href={`tel:${biz.phone.tel}`} class="btn btn-ghost"><Icon name="phone" /> {biz.phone.display}</a></li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
