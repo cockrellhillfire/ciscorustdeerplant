@@ -98,7 +98,8 @@ To add a new flavor, add it in both places. To mark something new, add `"badge":
 |---|---|
 | Phone numbers, email, address | `phone`, `phoneAlt`, `email`, `address` |
 | Facebook / Instagram / TikTok links | `social` |
-| Military discount, First Harvest Club | `discounts`, `firstHarvest` |
+| Military discount, First Harvest Club (and its rotating home-page photos) | `discounts`, `firstHarvest` (`photos`) |
+| Exotic prices, cape pickup policy, required-at-drop-off fees | `pricing.exoticProcessing`, `pickup.capePolicy`, `dropOff.requiredAtDropOff` |
 | Payment rules, freezer rent | `payment`, `pickup` |
 | Merch list and prices | `merch` (set `"show": false` to hide it) |
 | FAQ on the Drop-Off Guide | `faq` |

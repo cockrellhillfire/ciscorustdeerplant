@@ -43,7 +43,7 @@
   "social": {
     "facebook": "https://www.facebook.com/rustdeerplant",
     "instagram": "https://www.instagram.com/rustdeerplant",
-    "tiktok": "https://www.tiktok.com/@rustdeerplant"
+    "tiktok": "https://www.tiktok.com/@rust.deer.plant"
   },
   "reviewSummary": "98% recommend on Facebook (38 reviews)",
 
@@ -88,9 +88,20 @@
       "We'll call you the next business day to go over your cut ticket and take your deposit."
     ],
     "gutsFeeAfterHours": 100,
-    "gutsFeeAfterHoursNote": "An extra $100 is charged for any animal left after hours with the guts still in. Field dress it first, or bring it during business hours and we'll gut it for the $75 gut fee.",
+    "gutsFeeAfterHoursNote": "An extra $100 is charged for any animal left after hours with the guts still in. Field dress it first, or bring it during business hours and we'll field dress it for the $75 fee.",
+    "requiredAtDropOff": {
+      "_help": "Matches the 'Required at Drop-Off' sign in the shop.",
+      "lead": "Basic processing fee (the amount depends on the animal)",
+      "items": [
+        { "item": "Cape Fee", "price": 45 },
+        { "item": "Large Cape Fee", "price": 60 },
+        { "item": "Field Dress Fee", "price": 75 }
+      ],
+      "cleanupFee": 25,
+      "cleanupNote": "Excessively dirty animals will require a $25 clean-up fee."
+    },
     "bring": [
-      "Your valid Texas hunting license",
+      "Your valid hunting license (Texas, or the state you hunted in)",
       "Your animal, properly tagged",
       "Your cut-ticket choices: steaks, roasts, grind and any specialty items"
     ],
@@ -102,7 +113,7 @@
   },
 
   "payment": {
-    "policy": "Basic processing, cut fee, and any euros or cape fee are paid before you leave the drop-off. The remaining balance is due at pick-up.",
+    "policy": "Your basic processing fee, plus any cape or field dress fee, is paid before you leave the drop-off. The remaining balance is due at pick-up.",
     "methods": ["Cash (preferred)", "Credit and debit cards", "Checks"],
     "cashNote": "Cash is king. Every dollar paid in cash stays with a small, local business."
   },
@@ -111,7 +122,18 @@
     "freezerFreeDays": 14,
     "freezerFeePerDay": 5,
     "freezerNote": "Once we call or text that your order is ready, you have 14 days to pick it up. After that, freezer rent is $5.00 a day.",
-    "donationNote": "Anything not picked up by the last pickup date of the season is donated."
+    "donationNote": "Anything not picked up by the last pickup date of the season is donated.",
+    "capePolicy": {
+      "title": "Cape pickup policy",
+      "holdDays": 7,
+      "feePerDay": 10,
+      "points": [
+        "You are responsible for contacting your taxidermist to arrange pickup of your cape.",
+        "We will hold your cape for your taxidermist for 7 days.",
+        "After 7 days, a $10 daily freezer fee applies.",
+        "All freezer fees must be paid before your cape is released."
+      ]
+    }
   },
 
   "discounts": [
@@ -120,7 +142,18 @@
 
   "firstHarvest": {
     "title": "First Harvest Club",
-    "text": "Bring us your first deer and we'll hook you up with a free Rust Deer Plant t-shirt (or a cap or koozie while supplies last) and a picture for our Facebook page. Just tell us it's your first!"
+    "text": "Bring us your first deer and we'll hook you up with a free Rust Deer Plant t-shirt (or a cap or koozie while supplies last) and a picture for our Facebook page. Just tell us it's your first!",
+    "_photosHelp": "These rotate on the home page. Put new pictures in src/assets/gallery and add the file names here, newest first.",
+    "photos": [
+      "first-harvest-01.jpg",
+      "first-harvest-02.jpg",
+      "first-harvest-03.jpg",
+      "first-harvest-04.jpg",
+      "first-harvest-05.jpg",
+      "first-harvest-06.jpg",
+      "first-harvest-07.jpg",
+      "first-harvest-08.jpg"
+    ]
   },
 
   "pricing": {
@@ -129,15 +162,34 @@
     "disclaimer": "Prices can change. Please call (254) 442-1653 to confirm before you bring in your harvest.",
     "basicProcessing": {
       "title": "Basic Processing",
-      "includes": "Basic processing on any animal includes steaks and roasts cut, plus burger and chili ground.",
+      "includes": "Basic processing on any animal includes back straps (whole or steaks), tenderloin (whole or steaks), hind quarters (whole, roast or steaks), plus burger and chili.",
+      "basicCuts": [
+        { "cut": "Back Straps", "options": "Whole or steaks" },
+        { "cut": "Tenderloin", "options": "Whole or steaks" },
+        { "cut": "Hind Quarters", "options": "Whole, roast or steaks" },
+        { "cut": "Burger / Chili", "options": "" }
+      ],
       "items": [
         { "item": "Whitetail", "price": 125 },
         { "item": "Quartered Deer", "price": 100 },
         { "item": "Mule Deer", "price": 140 },
-        { "item": "Quartered Mule", "price": 115 },
-        { "item": "Elk", "price": 350 },
-        { "item": "Quartered Elk", "price": 225 },
-        { "item": "Fallow/Axis", "price": 175 }
+        { "item": "Quartered Mule", "price": 115 }
+      ]
+    },
+    "exoticProcessing": {
+      "title": "Exotic Basic Processing",
+      "items": [
+        { "item": "Buffalo / Bison", "price": 900 },
+        { "item": "Eland", "price": 450 },
+        { "item": "Wildebeest", "price": 350 },
+        { "item": "Elk / Stag", "price": 350 },
+        { "item": "Kudu", "price": 350 },
+        { "item": "Addax", "price": 300 },
+        { "item": "Oryx", "price": 300 },
+        { "item": "Sable", "price": 300 },
+        { "item": "Gemsbok", "price": 300 },
+        { "item": "Axis / Fallow", "price": 175 },
+        { "item": "Blackbuck", "price": 125 }
       ]
     },
     "hogProcessing": {
@@ -150,10 +202,12 @@
     "feesAndEuros": {
       "title": "Fees & Euros",
       "items": [
-        { "item": "Gut Fee", "price": 75 },
+        { "item": "Field Dress Fee", "price": 75 },
         { "item": "Cape Fee", "price": 45 },
         { "item": "Large Cape Fee", "price": 60 },
         { "item": "European Mount", "price": 125 },
+        { "item": "Clean-up Fee (excessively dirty animals)", "price": 25 },
+        { "item": "Cape held past 7 days", "price": 10, "note": "per day freezer fee" },
         { "item": "Rush Order", "price": null, "note": "Ask for pricing" },
         { "item": "Left after hours with guts in", "price": 100 }
       ]
@@ -236,33 +290,33 @@
 
   "merch": {
     "show": true,
-    "text": "Stop inside the shop for Rust Deer Plant gear.",
+    "text": "Stop inside the shop for Rust Deer Plant gear. Cups, koozies and other merch are priced as marked.",
     "items": [
-      { "item": "Leather-patch caps", "price": 25 },
-      { "item": "T-shirts", "price": null, "_todo": "TODO: price" },
-      { "item": "Hoodies", "price": null, "_todo": "TODO: price" },
-      { "item": "Koozies", "price": null, "_todo": "TODO: price" },
-      { "item": "Tumblers", "price": null, "_todo": "TODO: price" },
-      { "item": "Decals and keychains", "price": null, "_todo": "TODO: price" }
+      { "item": "T-shirts", "price": 30 },
+      { "item": "Caps", "price": 30 },
+      { "item": "Hoodies", "price": 40 },
+      { "item": "Cups, koozies & other merch", "price": null, "note": "Priced as marked" }
     ]
   },
 
   "services": [
     { "title": "Deer Processing", "text": "Whitetail and mule deer, whole or quartered. Steaks, roasts, burger and chili, cut the way you want.", "href": "/services/#basic-processing" },
-    { "title": "Hogs & Exotics", "text": "Hogs, elk, axis, fallow, red stag, aoudad, oryx and bison. If you can hunt it in Texas, bring it to the deck.", "href": "/services/#hog-processing" },
+    { "title": "Hogs & Exotics", "text": "Hogs, elk, axis, fallow, red stag, aoudad, oryx, kudu and bison. Whether you hunted it in Texas, New Mexico, Arizona or beyond, bring it to the deck.", "href": "/exotics/" },
     { "title": "Smoked Specialties", "text": "Link and summer sausage, jerky, snack sticks and more, smoked here and made from your own harvest.", "href": "/services/#link-sausage" },
     { "title": "European Mounts", "text": "Euros of all kinds, cleaned and whitened in-house. Something to hang on the wall while the freezer fills up.", "href": "/services/#fees-and-euros" }
   ],
 
   "faq": [
-    { "q": "What comes with basic processing?", "a": "Basic processing on any animal includes steaks and roasts cut, plus burger and chili ground. Cut options like tenderizing, round steaks and specialty sausage are added on your cut ticket." },
+    { "q": "What comes with basic processing?", "a": "Basic processing on any animal includes back straps (whole or steaks), tenderloin (whole or steaks), hind quarters (whole, roast or steaks), plus burger and chili. Cut options like tenderizing, round steaks and specialty sausage are added on your cut ticket." },
     { "q": "When are you open?", "a": "During the season (October through January) we're open 9 AM to 9 PM, seven days a week. We close on Thanksgiving Day, Christmas Eve and Christmas Day, but the back-deck drop-off stays open." },
     { "q": "Can I drop off after hours?", "a": "Yes. Use the drop-off on the back deck: tag your animal with your name and phone number, and we'll call you the next business day for your cut ticket. Animals left after hours with the guts in are charged an extra $100." },
-    { "q": "What do I pay at drop-off?", "a": "Basic processing, your cut fee, and any euro or cape fee are paid before you leave. The rest is due at pick-up. We take cash (preferred), cards and checks." },
+    { "q": "What do I pay at drop-off?", "a": "Your basic processing fee (the amount depends on the animal), plus a cape fee ($45, or $60 for a large cape) and the $75 field dress fee if they apply. Excessively dirty animals require a $25 clean-up fee. The rest is due at pick-up. We take cash (preferred), cards and checks." },
     { "q": "How long do I have to pick up?", "a": "You have 14 days from the day we call or text that your order is ready. After that, freezer rent is $5.00 a day. Anything left after the last pickup date of the season is donated." },
+    { "q": "How does cape pickup work?", "a": "You're responsible for contacting your taxidermist to arrange pickup of your cape. We hold capes for your taxidermist for 7 days. After that, a $10 daily freezer fee applies, and all freezer fees must be paid before the cape is released." },
     { "q": "Is there a minimum on sausage?", "a": "Yes. There's a 6 lb minimum on all sausage." },
     { "q": "Do you offer a military discount?", "a": "Yes. Military and first responders get 20% off Basic Processing." },
-    { "q": "Do you take hogs and exotics?", "a": "Yes, all season long. We process hogs, elk, axis, fallow, red stag, aoudad, oryx, bison and more." }
+    { "q": "Do you take hogs and exotics?", "a": "Yes, all season long. We process hogs, elk, axis, fallow, red stag, aoudad, oryx, kudu, eland, bison and more. See the Exotics page for prices." },
+    { "q": "Do you take animals hunted outside Texas?", "a": "Yes. Hunters bring us game from New Mexico, Arizona and other states. Bring the license and tags from the state you hunted in, and check the carcass transport rules before you cross state lines." }
   ],
 
   "reviews": [

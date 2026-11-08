@@ -4,16 +4,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import HoursTable from '../components/HoursTable.astro';
 import Icon from '../components/Icon.astro';
-import { biz, photo } from '../lib/business';
+import { biz, photo, formatPrice } from '../lib/business';
 
 const deck = photo('whitetail-buck-at-the-shop-door.jpg');
 const careTips = [
-  { title: 'Field dress fast', text: 'Get the guts out as soon as you can, especially on a warm day. Heat is the enemy of good venison. If you would rather we do it, bring the animal during business hours for the $75 gut fee.' },
+  { title: 'Field dress fast', text: 'Get the guts out as soon as you can, especially on a warm day. Heat is the enemy of good venison. If you would rather we do it, bring the animal during business hours for the $75 field dress fee.' },
   { title: 'Cool it down', text: 'Prop the body cavity open so air moves through it, and keep it in the shade. On warm days, get it to us or into a cooler the same day.' },
-  { title: 'Keep it clean and dry', text: 'Keep dirt, hair and water out of the cavity. If you ice it, keep the ice in bags so the meat does not sit in meltwater.' },
+  { title: 'Keep it clean and dry', text: 'Keep dirt, hair and water out of the cavity. If you ice it, keep the ice in bags so the meat does not sit in meltwater. Excessively dirty animals require a $25 clean-up fee.' },
   { title: 'Leave the hide on', text: 'There is no need to skin it. The hide protects the meat on the drive in, and our crew skins every animal here.' },
   { title: 'Tell us about the shot', text: 'Bloodshot or gut-shot meat gets trimmed, so knowing where you hit it helps us plan your cuts.' },
-  { title: 'Want a euro or a mount?', text: 'Tell us at drop-off before anything is cut. Cape fees are $45, or $60 for a large cape. Do not cut the throat if you plan to cape it.' },
+  { title: 'Want a euro or a mount?', text: 'Tell us at drop-off before anything is cut. Cape fees are $45, or $60 for a large cape. Do not cut the throat if you plan to cape it, and line up your taxidermist: we hold capes for 7 days.' },
 ];
 const chapters = [
   { id: 'hours', label: 'Hours' },
@@ -22,7 +22,10 @@ const chapters = [
   { id: 'payment', label: 'Payment' },
   { id: 'field-care', label: 'Field care' },
   { id: 'pickup', label: 'Pick-up' },
+  { id: 'cape-pickup', label: 'Cape pickup' },
 ];
+const req = biz.dropOff.requiredAtDropOff;
+const cape = biz.pickup.capePolicy;
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -67,9 +70,9 @@ const chapterHead = 'grid gap-4 md:grid-cols-[8rem_1fr] md:gap-10';
         </div>
       </div>
       <div class="reveal lg:order-1">
-        <p class="eyebrow">Texas tagging & license rules</p>
+        <p class="eyebrow">Tagging & license rules</p>
         <p class="mt-3 font-display text-4xl uppercase leading-none sm:text-5xl">Tag it before you move it</p>
-        <p class="mt-4 text-brown">Tagging and harvest-log rules change from season to season. Check Texas Parks & Wildlife for the current requirements before you head our way:</p>
+        <p class="mt-4 text-brown">Hunters bring us game from all over Texas, New Mexico, Arizona and beyond. Tagging, harvest-log and carcass transport rules change from season to season and from state to state, so check with the state you hunted in. For Texas, see Texas Parks & Wildlife:</p>
         <ul class="mt-5 space-y-2">
           {
             biz.dropOff.tpwdLinks.map((l) => (
@@ -150,8 +153,16 @@ const chapterHead = 'grid gap-4 md:grid-cols-[8rem_1fr] md:gap-10';
           <h2 id="pay-title" class="text-5xl text-cream sm:text-6xl">What you pay, and when</h2>
           <div class="mt-6 grid overflow-hidden rounded-sm border-2 border-white/15 sm:grid-cols-2">
             <div class="p-5">
-              <p class="font-cond text-sm font-bold uppercase tracking-[0.16em] text-blaze">At drop-off</p>
-              <p class="mt-2 font-display text-3xl uppercase leading-tight text-cream">Basic processing · Cut fee · Euro or cape fee</p>
+              <p class="font-cond text-sm font-bold uppercase tracking-[0.16em] text-blaze">Required at drop-off</p>
+              <p class="mt-2 font-display text-3xl uppercase leading-tight text-cream">{req.lead}</p>
+              <ul class="mt-3 space-y-1">
+                {req.items.map((it) => (
+                  <li class="flex items-baseline justify-between gap-4 border-b border-dashed border-white/15 pb-1 text-bone">
+                    <span>{it.item}</span><span class="font-display text-2xl text-cream">{formatPrice(it.price)}</span>
+                  </li>
+                ))}
+              </ul>
+              <p class="mt-3 text-sm text-sand">{req.cleanupNote}</p>
             </div>
             <div class="border-t-2 border-dashed border-white/15 p-5 sm:border-l-2 sm:border-t-0">
               <p class="font-cond text-sm font-bold uppercase tracking-[0.16em] text-blaze">At pick-up</p>
@@ -194,6 +205,29 @@ const chapterHead = 'grid gap-4 md:grid-cols-[8rem_1fr] md:gap-10';
             <a href={`tel:${biz.phone.tel}`} class="btn btn-primary"><Icon name="phone" /> {biz.phone.display}</a>
             <a href={`tel:${biz.phoneAlt.tel}`} class="btn btn-ghost">{biz.phoneAlt.display}</a>
           </div>
+        </div>
+      </section>
+
+      <section id="cape-pickup" class:list={['scroll-mt-20 py-16', chapterHead]} aria-labelledby="cape-title">
+        <span class="numeral-outline text-8xl" aria-hidden="true">07</span>
+        <div>
+          <p class="font-cond text-sm font-bold uppercase tracking-[0.2em] text-blaze">Notice to hunters</p>
+          <h2 id="cape-title" class="mt-1 text-5xl text-cream sm:text-6xl">{cape.title}</h2>
+          <p class="mt-4 text-lg text-bone">{cape.points[0]}</p>
+          <div class="mt-6 grid gap-4 sm:grid-cols-2">
+            <div class="hang-tag bg-cream py-4 text-ink [--tag-hole:var(--color-char)]">
+              <span class="block font-display text-4xl uppercase leading-none text-rust">{cape.holdDays}-day hold</span>
+              <span class="mt-1 block">{cape.points[1]}</span>
+            </div>
+            <div class="hang-tag bg-blaze py-4 text-ink [--tag-hole:var(--color-char)]">
+              <span class="block font-display text-4xl uppercase leading-none">${cape.feePerDay} per day</span>
+              <span class="mt-1 block">{cape.points[2]}</span>
+            </div>
+          </div>
+          <p class="mt-5 flex gap-3 border-l-4 border-blaze bg-ink p-4 text-cream">
+            <Icon name="snowflake" class="mt-0.5 h-5 w-5 shrink-0 text-blaze" />
+            <span>{cape.points[3]}</span>
+          </p>
         </div>
       </section>
     </div>

@@ -117,6 +117,9 @@ export function localBusinessJsonLd() {
     areaServed: [
       { '@type': 'AdministrativeArea', name: 'Eastland County, Texas' },
       ...biz.serviceArea.map((c) => ({ '@type': 'City', name: `${c}, Texas` })),
+      { '@type': 'State', name: 'Texas' },
+      { '@type': 'State', name: 'New Mexico' },
+      { '@type': 'State', name: 'Arizona' },
     ],
     openingHoursSpecification: [
       {

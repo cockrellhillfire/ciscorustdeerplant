@@ -10,6 +10,7 @@ import { biz, photo, formatPrice } from '../lib/business';
 const p = biz.pricing;
 const jump = [
   { id: 'basic-processing', label: 'Basic' },
+  { id: 'exotic-processing', label: 'Exotics' },
   { id: 'hog-processing', label: 'Hogs' },
   { id: 'fees-and-euros', label: 'Fees & Euros' },
   { id: 'cut-options', label: 'Cut Options' },
@@ -22,6 +23,7 @@ const jump = [
 ];
 const sausage = photo('smoked-link-sausage.jpg');
 const euro = photo('elk-european-mount.jpg');
+const caps = photo('camo-patch-caps.jpg');
 const flavorGroups = [
   { title: 'Link sausage', list: biz.flavors.linkSausage },
   { title: 'Summer sausage', list: biz.flavors.summerSausage },
@@ -35,6 +37,7 @@ const priceSchema = {
   name: 'Rust Deer Plant processing and specialty price guide',
   itemListElement: [
     ...p.basicProcessing.items,
+    ...p.exoticProcessing.items,
     ...p.hogProcessing.items.map((i) => ({ ...i, item: `Hog processing, ${i.item}` })),
     ...p.feesAndEuros.items.filter((i) => i.price !== null),
   ].map((i) => ({
@@ -48,14 +51,14 @@ const priceSchema = {
 
 <BaseLayout
   title="Services & Pricing"
-  description="Deer processing prices in Cisco, TX: whitetail $125, mule deer $140, elk $350, hogs from $120, European mounts $125. Specialty sausage, jerky and snack sticks by the pound."
+  description="Deer processing prices in Cisco, TX: whitetail $125, mule deer $140, elk $350, bison $900, hogs from $120, European mounts $125. Specialty sausage, jerky and snack sticks by the pound."
   jsonLd={[priceSchema]}
 >
   <PageHero
     eyebrow="Services & pricing"
     title="The price guide"
     ribbon={`${p.updated} · Prices can change`}
-    lead="Whitetail, mule deer, elk, hogs and exotics. Steaks, roasts, burger and chili come standard. Add sausage, jerky and euros to make it yours."
+    lead="Whitetail, mule deer, elk, hogs and exotics. Back straps, tenderloin, hind quarters, burger and chili come standard. Add sausage, jerky and euros to make it yours."
     photo={photo('butchering-table.jpg')}
     next="char"
   />
@@ -89,14 +92,29 @@ const priceSchema = {
         <div class="mt-10 grid gap-x-10 gap-y-8 lg:grid-cols-2">
           <div class="flex flex-col gap-8">
             <PriceList id="basic-processing" title={p.basicProcessing.title} items={p.basicProcessing.items}>
-              <p class="mt-3 border-y-2 border-rust/40 py-3 text-center text-[0.98rem] font-semibold">{p.basicProcessing.includes}</p>
+              <div class="mt-3 border-y-2 border-rust/40 py-3 text-center">
+                <p class="font-cond text-sm font-bold uppercase tracking-[0.16em] text-rust">Basic cuts include</p>
+                <ul class="mt-1">
+                  {p.basicProcessing.basicCuts.map((c) => (
+                    <li class="text-[0.98rem]"><span class="font-semibold">{c.cut}</span>{c.options && <span class="text-brown"> · {c.options}</span>}</li>
+                  ))}
+                </ul>
+              </div>
             </PriceList>
-            <PriceList id="hog-processing" title={p.hogProcessing.title} items={p.hogProcessing.items} />
-            <PriceList id="fees-and-euros" title={p.feesAndEuros.title} items={p.feesAndEuros.items}>
+            <PriceList id="exotic-processing" title={p.exoticProcessing.title} items={p.exoticProcessing.items}>
               <p class="mt-3 text-sm text-brown">
-                The $100 charge applies only to animals left at the after-hours drop-off with the guts in. See the <a href="/drop-off/#after-hours" class="font-semibold text-rust-deep underline">drop-off guide</a>.
+                Hunted out of state? We take game from New Mexico, Arizona and beyond. See the <a href="/exotics/" class="font-semibold text-rust-deep underline">exotics page</a>.
               </p>
             </PriceList>
+            <PriceList id="fees-and-euros" title={p.feesAndEuros.title} items={p.feesAndEuros.items}>
+              <p class="mt-3 text-sm text-brown">
+                The $100 charge applies only to animals left at the after-hours drop-off with the guts in. Capes are held 7 days for your taxidermist, then $10 a day. See the <a href="/drop-off/#cape-pickup" class="font-semibold text-rust-deep underline">cape pickup policy</a>.
+              </p>
+            </PriceList>
+            <PriceList id="hog-processing" title={p.hogProcessing.title} items={p.hogProcessing.items} />
+          </div>
+
+          <div class="flex flex-col gap-8">
             <PriceList id="cut-options" title={p.cutOptions.title}>
               <dl class="divide-y divide-brown/20">
                 {
@@ -124,9 +142,6 @@ const priceSchema = {
                 <span class="text-sm text-brown">{p.cutOptions.grindNote}</span>
               </p>
             </PriceList>
-          </div>
-
-          <div class="flex flex-col gap-8">
             <PriceList id="hog-cuts" title={p.hogCuts.title} items={p.hogCuts.items}>
               <Fragment slot="before">
                 <p class="mb-1 mt-2">{p.hogCuts.options.join(' · ')}</p>
@@ -218,11 +233,15 @@ const priceSchema = {
           <p class="ruled eyebrow reveal">Rust gear</p>
           <h2 id="merch-title" class="reveal mt-3 text-6xl sm:text-7xl">Wear the antlers</h2>
           <p class="reveal mt-3 text-brown">{biz.merch.text}</p>
+          <figure class="taped tilt-l2 reveal mx-auto mt-10 max-w-2xl">
+            <Picture src={caps.src} alt={caps.alt} formats={['avif', 'webp']} widths={[400, 672, 1000, 1344]} sizes="(min-width: 768px) 42rem, 92vw" class="aspect-[5/4] w-full object-cover" />
+            <figcaption class="mt-2 text-center font-cond text-sm font-bold uppercase tracking-[0.1em] text-ink">Camo patch caps · {formatPrice(biz.merch.items.find((m) => m.item === 'Caps')?.price)}</figcaption>
+          </figure>
           <ul class="reveal mt-8 flex flex-wrap justify-center gap-3">
             {biz.merch.items.map((m) => (
               <li class="hang-tag bg-ink font-cond text-lg font-bold uppercase tracking-[0.06em] text-cream [--tag-hole:var(--color-cream)]">
                 {m.item}
-                {m.price !== null && <span class="ml-2 text-blaze">{formatPrice(m.price)}</span>}
+                <span class="ml-2 text-blaze">{formatPrice(m.price, false, m.note)}</span>
               </li>
             ))}
           </ul>

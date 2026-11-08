@@ -7,7 +7,8 @@ import HoursTable from '../components/HoursTable.astro';
 import MapEmbed from '../components/MapEmbed.astro';
 import { biz, photo, formatTime, formatPrice } from '../lib/business';
 
-const hero = photo('bull-elk-at-sunset.jpg');
+const hero = photo('bison-bull-family-hunt.jpg');
+const firstHarvestPhotos = biz.firstHarvest.photos.map((f) => photo(f));
 const h = biz.hours.days[0];
 const hoursSummary = `${formatTime(h.open)} – ${formatTime(h.close)}`;
 const p = biz.pricing;
@@ -15,12 +16,12 @@ const p = biz.pricing;
 // The menu board: what we do, with a starting price pulled from business.json.
 const board = [
   { n: '01', title: 'Deer processing', text: biz.services[0].text, from: formatPrice(p.basicProcessing.items[0].price), note: 'whitetail', href: '/services/#basic-processing', img: photo('heavy-whitetail-buck.jpg') },
-  { n: '02', title: 'Hogs & exotics', text: biz.services[1].text, from: formatPrice(p.hogProcessing.items[0].price), note: 'hogs', href: '/services/#hog-processing', img: photo('axis-buck-in-velvet.jpg') },
+  { n: '02', title: 'Hogs & exotics', text: biz.services[1].text, from: formatPrice(p.hogProcessing.items[0].price), note: 'hogs', href: '/exotics/', img: photo('axis-buck-in-velvet.jpg') },
   { n: '03', title: 'Smoked specialties', text: biz.services[2].text, from: formatPrice(p.linkSausage.items[2].price, true), note: 'link sausage', href: '/services/#link-sausage', img: photo('jalapeno-cheese-summer-sausage.jpg') },
   { n: '04', title: 'European mounts', text: biz.services[3].text, from: formatPrice(p.feesAndEuros.items[3].price), note: 'per mount', href: '/services/#fees-and-euros', img: photo('tall-whitetail-euro.jpg') },
 ];
 
-const species = ['Whitetail', 'Mule deer', 'Elk', 'Axis', 'Fallow', 'Red stag', 'Aoudad', 'Oryx', 'Bison', 'Hogs'];
+const species = ['Whitetail', 'Mule deer', 'Elk', 'Axis', 'Fallow', 'Red stag', 'Aoudad', 'Oryx', 'Kudu', 'Eland', 'Bison', 'Hogs'];
 
 const smoke = [photo('sausage-rings-on-racks.jpg'), photo('jerky-in-the-smoker.jpg'), photo('summer-sausage-and-links.jpg')];
 const tags: { name: string; kind: string; isNew?: boolean }[] = [
@@ -33,7 +34,7 @@ const tags: { name: string; kind: string; isNew?: boolean }[] = [
 const trail = [
   { icon: 'truck', title: 'Pull up to the deck', text: `${biz.dropOff.where}. ${hoursSummary} daily in season, or use the tag drop-off after hours.` },
   { icon: 'ticket', title: 'Fill out your cut ticket', text: 'Steaks, roasts, grind, plus any sausage, jerky or snack sticks. We will help you pick.' },
-  { icon: 'cash', title: 'Pay the basics', text: 'Basic processing, cut fee and any euro or cape fee at drop-off. The rest at pick-up.' },
+  { icon: 'cash', title: 'Pay the basics', text: 'Basic processing, plus any cape or field dress fee, at drop-off. The rest at pick-up.' },
   { icon: 'snowflake', title: 'We call, you pick up', text: `Packaged and boxed. Pick up within ${biz.pickup.freezerFreeDays} days of our call.` },
 ] as const;
 
@@ -56,21 +57,32 @@ const [featured, ...moreReviews] = [biz.reviews[1], ...biz.reviews.filter((_, i)
 >
   <!-- HERO: centered flyer composition -->
   <section class="relative isolate overflow-hidden bg-ink">
+    <!-- Wide screens: a blurred copy of the photo fills the sides of the portrait shot. -->
+    <Picture
+      src={hero.src}
+      alt=""
+      formats={['avif', 'webp']}
+      widths={[480]}
+      quality={40}
+      sizes="480px"
+      loading="lazy"
+      class="absolute inset-0 -z-30 hidden h-full w-full scale-110 object-cover opacity-45 blur-2xl sm:block"
+    />
+    <!-- Sized so the faces sit above the wording and the bison's head shows below them. -->
     <Picture
       src={hero.src}
       alt={hero.alt}
       formats={['avif', 'webp']}
-      widths={[640, 960, 1280, 1600, 2016]}
-      sizes="100vw"
+      widths={[640, 960, 1320]}
+      sizes="(min-width: 640px) 720px, 660px"
       loading="eager"
       fetchpriority="high"
-      class="absolute inset-0 -z-20 h-full w-full object-cover object-[64%_45%]"
+      class="absolute left-1/2 top-[-338px] -z-20 h-[960px] w-auto max-w-none -translate-x-[59%] sm:top-[-52%] sm:h-[150%] sm:-translate-x-[57%] sm:[mask-image:linear-gradient(90deg,transparent,#000_16%,#000_84%,transparent)]"
     />
-    <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_70%_60%_at_50%_45%,rgb(18_16_14/0.5),rgb(18_16_14/0.88))]" aria-hidden="true"></div>
+    <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(18_16_14/0.1)_0%,rgb(18_16_14/0.16)_16%,rgb(18_16_14/0.42)_32%,rgb(18_16_14/0.5)_70%,rgb(18_16_14/0.7)_100%)]" aria-hidden="true"></div>
 
-    <div class="container-x flex min-h-[min(82svh,48rem)] flex-col items-center justify-center pb-6 pt-12 sm:pb-28 sm:pt-14 text-center sm:pb-28">
-      <AntlerMark class="h-14 w-14 animate-rise text-blaze sm:h-16 sm:w-16" />
-      <p class="script mt-4 animate-rise text-3xl text-blaze [animation-delay:60ms] sm:text-4xl">{biz.tagline}</p>
+    <div class="container-x flex min-h-[min(82svh,48rem)] flex-col items-center justify-start pb-6 pt-[8.5rem] text-center [text-shadow:0_2px_12px_rgb(0_0_0/0.85)] sm:justify-end sm:pb-24 sm:pt-14">
+      <p class="script animate-rise text-3xl text-blaze [animation-delay:60ms] sm:text-4xl">{biz.tagline}</p>
       <h1 class="mt-2 animate-rise [animation-delay:120ms]">
         <span class="rough-text block text-[3.7rem] leading-[0.88] text-cream sm:text-[7rem] lg:text-[9.5rem]">Rust Deer Plant</span>
         <span class="ruled mt-4 font-cond text-base font-bold tracking-[0.22em] text-bone sm:text-2xl"><span>Wild Game Processing<span class="hidden sm:inline"> <span class="text-blaze">·</span> Cisco, Texas</span></span></span>
@@ -79,7 +91,7 @@ const [featured, ...moreReviews] = [biz.reviews[1], ...biz.reviews.filter((_, i)
       <p class="mt-6 max-w-xl animate-rise text-lg text-bone [animation-delay:180ms] sm:text-xl">
         Deer, hogs and exotics cut the way you want. Smoked sausage, jerky and euros of all kinds. Family-run on Highway 6.
       </p>
-      <div class="mt-8 flex w-full animate-rise flex-col justify-center gap-3 [animation-delay:240ms] sm:w-auto sm:flex-row">
+      <div class="mt-8 flex w-full animate-rise flex-col justify-center gap-3 [animation-delay:240ms] [text-shadow:none] sm:w-auto sm:flex-row">
         <a href={`tel:${biz.phone.tel}`} class="btn btn-primary"><Icon name="phone" /> Call now</a>
         <a href={biz.directionsUrl} class="btn btn-ghost" rel="noopener" target="_blank"><Icon name="pin" /> Get directions<span class="sr-only"> (opens Google Maps)</span></a>
         <a href="#hours" class="btn btn-ghost"><Icon name="clock" /> Hours</a>
@@ -236,10 +248,28 @@ const [featured, ...moreReviews] = [biz.reviews[1], ...biz.reviews.filter((_, i)
       </div>
 
       <div class="mt-12 grid gap-6 md:grid-cols-3">
-        <div class="reveal tilt-r2 flex flex-col justify-center bg-blaze p-6 text-ink shadow-xl md:col-span-2">
-          <p class="font-cond text-sm font-bold uppercase tracking-[0.2em]">First Harvest Club</p>
-          <p class="mt-1 font-display text-4xl uppercase leading-none">First deer? Let's celebrate.</p>
-          <p class="mt-2 text-[0.98rem]">{biz.firstHarvest.text}</p>
+        <div class="reveal tilt-r2 grid items-center gap-5 bg-blaze p-5 text-ink shadow-xl sm:grid-cols-[12rem_1fr] sm:p-6 md:col-span-2">
+          <div class="relative mx-auto aspect-[4/5] w-full max-w-[14rem] overflow-hidden border-4 border-cream bg-ink shadow-lg sm:max-w-none" data-rotator>
+            {
+              firstHarvestPhotos.map((f, i) => (
+                <Picture
+                  src={f.src}
+                  alt={f.alt}
+                  formats={['avif', 'webp']}
+                  widths={[240, 400]}
+                  sizes="(min-width: 640px) 12rem, 14rem"
+                  class:list={['absolute inset-0 h-full w-full object-cover transition-opacity duration-700', i === 0 ? 'opacity-100' : 'opacity-0']}
+                  aria-hidden={i === 0 ? undefined : 'true'}
+                  data-slide
+                />
+              ))
+            }
+          </div>
+          <div>
+            <p class="font-cond text-sm font-bold uppercase tracking-[0.2em]">First Harvest Club</p>
+            <p class="mt-1 font-display text-4xl uppercase leading-none">First deer? Let's celebrate.</p>
+            <p class="mt-2 text-[0.98rem]">{biz.firstHarvest.text}</p>
+          </div>
         </div>
         <div class="reveal tilt-l2 bg-cream p-6 text-ink shadow-xl">
           <p class="flex items-center gap-2 font-cond text-sm font-bold uppercase tracking-[0.2em] text-rust"><Icon name="shield" class="h-5 w-5" /> {biz.discounts[0].title}</p>
@@ -308,6 +338,27 @@ const [featured, ...moreReviews] = [biz.reviews[1], ...biz.reviews.filter((_, i)
       </div>
     </div>
   </section>
+
+  <script>
+    // First Harvest Club: crossfade through the photos. Holds on the first one for reduced motion.
+    const rotator = document.querySelector<HTMLElement>('[data-rotator]');
+    const slides = rotator ? Array.from(rotator.querySelectorAll<HTMLElement>('[data-slide]')) : [];
+    if (slides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      let current = 0;
+      let timer: number | undefined;
+      const show = (n: number) => {
+        slides[current].classList.replace('opacity-100', 'opacity-0');
+        slides[current].setAttribute('aria-hidden', 'true');
+        current = n % slides.length;
+        slides[current].classList.replace('opacity-0', 'opacity-100');
+        slides[current].removeAttribute('aria-hidden');
+      };
+      const start = () => { timer ??= window.setInterval(() => show(current + 1), 3500); };
+      const stop = () => { window.clearInterval(timer); timer = undefined; };
+      // Only run while the card is on screen.
+      new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop())).observe(rotator!);
+    }
+  </script>
 
   <script>
     // Live "open now" status in Cisco, TX time. Without JS the ribbon shows the regular hours.

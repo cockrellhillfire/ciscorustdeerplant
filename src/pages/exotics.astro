@@ -1,0 +1,136 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PriceList from '../components/PriceList.astro';
+import Icon from '../components/Icon.astro';
+import AntlerMark from '../components/AntlerMark.astro';
+import { biz, photo, formatPrice } from '../lib/business';
+
+const p = biz.pricing;
+const req = biz.dropOff.requiredAtDropOff;
+const cape = biz.pickup.capePolicy;
+
+const wall = [
+  { p: photo('two-bison-on-the-deck.jpg'), tilt: 'tilt-l', span: 'row-span-2' },
+  { p: photo('scimitar-oryx.jpg'), tilt: 'tilt-r', span: '' },
+  { p: photo('red-stag-under-the-oaks.jpg'), tilt: 'tilt-r2', span: 'row-span-2' },
+  { p: photo('two-aoudad-rams.jpg'), tilt: 'tilt-l2', span: '' },
+  { p: photo('fallow-buck-palmated-antlers.jpg'), tilt: 'tilt-r', span: '' },
+  { p: photo('feral-hog-with-a-bow.jpg'), tilt: 'tilt-l', span: '' },
+];
+
+const priceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'OfferCatalog',
+  name: 'Rust Deer Plant exotic and hog processing prices',
+  itemListElement: [
+    ...p.exoticProcessing.items,
+    ...p.hogProcessing.items.map((i) => ({ ...i, item: `Hog processing, ${i.item}` })),
+  ].map((i) => ({
+    '@type': 'Offer',
+    itemOffered: { '@type': 'Service', name: `${i.item} processing` },
+    price: i.price,
+    priceCurrency: 'USD',
+  })),
+};
+---
+
+<BaseLayout
+  title="Exotic & Hog Processing"
+  description="Exotic game processing in Cisco, TX: bison $900, eland $450, kudu, wildebeest and elk $350, oryx, gemsbok, addax and sable $300, axis and fallow $175, blackbuck $125. Hogs from $120. Game from Texas, New Mexico, Arizona and beyond."
+  jsonLd={[priceSchema]}
+>
+  <PageHero
+    eyebrow="Hogs & exotics"
+    title="Bring us the big ones"
+    ribbon="Texas · New Mexico · Arizona & beyond"
+    lead="Bison, eland, kudu, oryx, red stag, aoudad, axis, hogs and more. Wherever you hunted it, bring it to the deck and we'll cut it the way you want."
+    photo={photo('crew-with-bison-quarter.jpg')}
+    next="char"
+  />
+
+  <div class="grain bg-char pb-20">
+    <!-- Price sheet -->
+    <article class="on-light container-x max-w-5xl pt-6" aria-labelledby="exotic-sheet-title">
+      <div class="grain grain-light rounded-sm bg-[#fbf6ec] px-4 pb-10 pt-10 text-ink shadow-[0_40px_80px_-40px_rgb(0_0_0/0.9)] sm:px-10">
+        <header class="text-center">
+          <AntlerMark class="mx-auto h-14 w-14 text-ink" />
+          <p class="mt-2 font-display text-5xl uppercase leading-none sm:text-6xl">Rust Deer Plant</p>
+          <h2 id="exotic-sheet-title" class="mx-auto mt-6 max-w-3xl bg-rust px-4 py-3 font-display text-3xl uppercase text-cream sm:text-4xl">Exotic Basic Processing Prices</h2>
+        </header>
+
+        <div class="mt-10 grid gap-x-10 gap-y-8 lg:grid-cols-2">
+          <PriceList id="exotic-prices" title="Exotics" items={p.exoticProcessing.items} />
+          <div class="flex flex-col gap-8">
+            <PriceList id="hog-prices" title={p.hogProcessing.title} items={p.hogProcessing.items} />
+            <PriceList id="basic-cuts" title="Basic cuts include">
+              <ul class="divide-y divide-brown/20">
+                {p.basicProcessing.basicCuts.map((c) => (
+                  <li class="py-2.5">
+                    <span class="block font-cond text-lg font-bold uppercase tracking-[0.08em] text-rust-deep">{c.cut}</span>
+                    {c.options && <span>{c.options}</span>}
+                  </li>
+                ))}
+              </ul>
+              <p class="mt-2 text-sm text-brown">Want sausage, jerky or a euro too? Add it to your cut ticket. See the <a href="/services/#cut-options" class="font-semibold text-rust-deep underline">full price guide</a>.</p>
+            </PriceList>
+          </div>
+        </div>
+
+        <p class="mt-10 border-t-2 border-rust/50 pt-6 text-center text-sm text-brown">Don't see your animal? Call <a href={`tel:${biz.phone.tel}`} class="font-semibold text-rust-deep underline">{biz.phone.display}</a> and ask. {p.disclaimer}</p>
+      </div>
+    </article>
+
+    <!-- Fees and cape policy -->
+    <section class="container-x mt-20 max-w-5xl" aria-label="Drop-off fees and cape pickup">
+      <div class="grid gap-8 md:grid-cols-2">
+        <div class="reveal border-t-4 border-blaze pt-5">
+          <Icon name="cash" class="h-9 w-9 text-blaze" />
+          <h2 class="mt-3 text-4xl text-cream">Required at drop-off</h2>
+          <p class="mt-2 text-bone">{req.lead}, plus:</p>
+          <ul class="mt-3 space-y-1">
+            {req.items.map((it) => (
+              <li class="flex items-baseline justify-between gap-4 border-b border-dashed border-white/15 pb-1 text-bone">
+                <span>{it.item}</span><span class="font-display text-2xl text-cream">{formatPrice(it.price)}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-3 text-sm text-sand">{req.cleanupNote}</p>
+        </div>
+        <div class="reveal border-t-4 border-blaze pt-5">
+          <Icon name="snowflake" class="h-9 w-9 text-blaze" />
+          <h2 class="mt-3 text-4xl text-cream">{cape.title}</h2>
+          <ul class="mt-3 space-y-2 text-bone">
+            {cape.points.map((pt) => <li class="flex gap-2"><span class="text-blaze" aria-hidden="true">▸</span><span>{pt}</span></li>)}
+          </ul>
+          <a href="/drop-off/#cape-pickup" class="mt-4 inline-flex items-center gap-2 font-cond font-bold uppercase tracking-[0.12em] text-blaze underline decoration-2 underline-offset-4 hover:no-underline">Drop-off guide <Icon name="arrow" class="h-4 w-4" /></a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Photo wall -->
+  <section class="section relative overflow-hidden bg-[#2b221b]" aria-labelledby="exotic-wall-title">
+    <div class="container-x relative">
+      <div class="reveal text-center">
+        <p class="ruled eyebrow">{biz.hashtag}</p>
+        <h2 id="exotic-wall-title" class="mt-3 text-6xl text-cream sm:text-7xl">Off the deck</h2>
+        <p class="mx-auto mt-4 max-w-xl text-bone">Bison, oryx, red stag, aoudad, fallow and hogs. A few that came through the plant.</p>
+      </div>
+      <div class="mt-14 grid auto-rows-[11rem] grid-cols-2 gap-5 sm:auto-rows-[13rem] md:grid-cols-4 md:gap-7">
+        {
+          wall.map((b) => (
+            <a href="/gallery/" class:list={['taped reveal block', b.tilt, b.span]}>
+              <Picture src={b.p.src} alt={b.p.alt} formats={['avif', 'webp']} widths={[300, 480, 640]} sizes="(min-width: 768px) 22vw, 46vw" class="h-full w-full object-cover" />
+            </a>
+          ))
+        }
+      </div>
+      <div class="reveal mt-12 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href={`tel:${biz.phone.tel}`} class="btn btn-primary"><Icon name="phone" /> Call {biz.phone.display}</a>
+        <a href="/drop-off/" class="btn btn-ghost">How drop-off works <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

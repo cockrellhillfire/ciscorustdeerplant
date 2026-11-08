@@ -1,5 +1,10 @@
 [
   {
+    "file": "bison-bull-family-hunt.jpg",
+    "category": "harvest",
+    "alt": "Three hunters kneeling behind a big bison bull in a dry pasture below a cedar-covered hill"
+  },
+  {
     "file": "bull-elk-at-sunset.jpg",
     "category": "harvest",
     "alt": "Hunter kneeling behind a big bull elk in open West Texas grassland at sunset"
@@ -160,6 +165,46 @@
     "alt": "Smiling boy in an orange shirt holding the rack of his first whitetail buck"
   },
   {
+    "file": "first-harvest-01.jpg",
+    "category": "harvest",
+    "alt": "Young hunter kneeling beside his first deer at the Rust Deer Plant door"
+  },
+  {
+    "file": "first-harvest-02.jpg",
+    "category": "harvest",
+    "alt": "Dad and young son kneeling with the boy’s first whitetail buck at the shop door"
+  },
+  {
+    "file": "first-harvest-03.jpg",
+    "category": "harvest",
+    "alt": "Young huntress kneeling beside her first whitetail buck at the shop door"
+  },
+  {
+    "file": "first-harvest-04.jpg",
+    "category": "harvest",
+    "alt": "Boy in a beanie kneeling with his first buck at the shop door"
+  },
+  {
+    "file": "first-harvest-05.jpg",
+    "category": "harvest",
+    "alt": "Teen hunter in a Rust Deer Plant shirt kneeling with his first buck"
+  },
+  {
+    "file": "first-harvest-06.jpg",
+    "category": "harvest",
+    "alt": "Bowhunter in camo kneeling beside his first bow buck at the shop door"
+  },
+  {
+    "file": "first-harvest-07.jpg",
+    "category": "harvest",
+    "alt": "Girl smiling with her first whitetail buck below the antler logo on the door"
+  },
+  {
+    "file": "first-harvest-08.jpg",
+    "category": "harvest",
+    "alt": "Young hunter kneeling between his first two deer at the shop door"
+  },
+  {
     "file": "bison-roast-cut.jpg",
     "category": "cuts",
     "alt": "Butcher in camo holding a large, freshly cut bison roast inside the shop"
@@ -318,6 +363,11 @@
     "file": "euros-and-caps.jpg",
     "category": "euros",
     "alt": "Horned skull mount surrounded by antlers and Rust Deer Plant caps"
+  },
+  {
+    "file": "camo-patch-caps.jpg",
+    "category": "shop",
+    "alt": "Four camo caps with Wild Game Processing patches from The Blind Horn Ranch Co. lined up on a log with an antler shed"
   },
   {
     "file": "hoodies-and-caps.jpg",
