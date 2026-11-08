@@ -42,6 +42,20 @@ jobs:
       - name: Check and build
         run: npm run build
 
+      - name: Lighthouse (mobile) summary
+        # Informational only: scores go to the run summary and never block a deploy.
+        continue-on-error: true
+        run: |
+          npx astro preview --port 4321 > /dev/null 2>&1 &
+          npx wait-on -t 60000 http://localhost:4321/
+          echo "| Page | Performance | Accessibility | Best practices | SEO |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|---|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          for p in / /services/ /drop-off/ /gallery/ /about/ /contact/; do
+            npx -y lighthouse@12 "http://localhost:4321$p" --quiet --chrome-flags="--headless=new --no-sandbox" \
+              --output=json --output-path=lh.json > /dev/null 2>&1 || continue
+            node -e "const r=require('./lh.json');const c=r.categories;const s=k=>Math.round(c[k].score*100);console.log('| $p | '+s('performance')+' | '+s('accessibility')+' | '+s('best-practices')+' | '+s('seo')+' |')" >> "$GITHUB_STEP_SUMMARY"
+          done
+
       - name: Deploy
         # Pull requests get a preview URL; pushes to main go live.
         if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
