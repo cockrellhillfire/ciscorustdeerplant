@@ -235,7 +235,7 @@ const [featured, ...moreReviews] = [biz.reviews[1], ...biz.reviews.filter((_, i)
 
       </div>
 
-      <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div class="mt-12 grid gap-6 md:grid-cols-3">
         <div class="reveal tilt-r2 flex flex-col justify-center bg-blaze p-6 text-ink shadow-xl md:col-span-2">
           <p class="font-cond text-sm font-bold uppercase tracking-[0.2em]">First Harvest Club</p>
           <p class="mt-1 font-display text-4xl uppercase leading-none">First deer? Let's celebrate.</p>
@@ -245,11 +245,6 @@ const [featured, ...moreReviews] = [biz.reviews[1], ...biz.reviews.filter((_, i)
           <p class="flex items-center gap-2 font-cond text-sm font-bold uppercase tracking-[0.2em] text-rust"><Icon name="shield" class="h-5 w-5" /> {biz.discounts[0].title}</p>
           <p class="mt-2 font-display text-3xl uppercase leading-none">20% off basic processing</p>
           <p class="mt-2 text-brown">Just let us know when you drop off. Thank you for your service.</p>
-        </div>
-        <div class="reveal tilt-r bg-cream p-6 text-ink shadow-xl">
-          <p class="flex items-center gap-2 font-cond text-sm font-bold uppercase tracking-[0.2em] text-rust"><Icon name="tag" class="h-5 w-5" /> Saturdays in season</p>
-          <p class="mt-2 font-display text-3xl uppercase leading-none">Sausage, jerky & sticks for sale</p>
-          <p class="mt-2 text-brown">{biz.saturdaySales.text}</p>
         </div>
       </div>
 

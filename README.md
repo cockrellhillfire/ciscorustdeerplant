@@ -101,7 +101,6 @@ To add a new flavor, add it in both places. To mark something new, add `"badge":
 | Military discount, First Harvest Club | `discounts`, `firstHarvest` |
 | Payment rules, freezer rent | `payment`, `pickup` |
 | Merch list and prices | `merch` (set `"show": false` to hide it) |
-| Saturday sausage sales note | `saturdaySales` |
 | FAQ on the Drop-Off Guide | `faq` |
 | Reviews | `reviews` (first name and last initial only) |
 | Map pin | `geo` (latitude and longitude) |
