@@ -22,6 +22,14 @@ Do this in the **ciscorustdeerplant** Cloudflare account.
 1. Sign in at <https://dash.cloudflare.com>.
 2. **Add a domain** → enter `ciscorustdeerplant.com` → pick the **Free** plan.
 3. Cloudflare scans the existing DNS records. Delete any old `A`/`CNAME` records for `@` and `www` that point at a parking page or another host. Pages adds the right records in step 3.
+   **Keep every Zoho Mail record.** `contact@ciscorustdeerplant.com` is hosted at Zoho, so before changing nameservers, compare the imported records with the DNS at the registrar (or Zoho Mail Admin → Domains → DNS Mapping) and make sure all of these exist in Cloudflare, with the proxy **off** (gray cloud):
+   - `MX` records for `@` (usually `mx.zoho.com` 10, `mx2.zoho.com` 20, `mx3.zoho.com` 50)
+   - `TXT` for `@`: the SPF record, `v=spf1 include:zoho.com ~all`
+   - `TXT` for the Zoho DKIM selector (for example `zmail._domainkey`)
+   - `TXT` for `_dmarc`, if one exists
+   - Any `zb...` verification `CNAME`/`TXT` Zoho added
+
+   If one is missing, mail to contact@ stops arriving as soon as the nameservers switch.
 4. Cloudflare shows two nameservers, for example `ada.ns.cloudflare.com` and `bob.ns.cloudflare.com`. Copy them.
 
 ## 2. Point the registrar at Cloudflare
@@ -82,8 +90,10 @@ Then **Actions → Deploy to Cloudflare Pages → Run workflow** (or push to `ma
 
 The form posts to `/api/contact`, a Cloudflare Pages Function (`functions/api/contact.ts`). It sends mail through [Resend](https://resend.com). Until a key is set, the form tells visitors to call the plant instead, so nothing breaks.
 
-1. Create a free Resend account and **add the domain `ciscorustdeerplant.com`**.
-2. Resend lists DNS records (SPF, DKIM and an MX for the return path). Add each one in **Cloudflare → DNS → Records** exactly as shown, with the proxy **off** (gray cloud). Wait until Resend shows the domain as **Verified**.
+Messages are delivered to **contact@ciscorustdeerplant.com**, which is a **Zoho Mail** mailbox. Zoho receives the mail; Resend only sends it from the website. The two don't conflict, because Resend's records live on the `send.` subdomain and on its own DKIM name, not on the root MX or SPF that Zoho uses.
+
+1. Create a free Resend account and **add the domain `ciscorustdeerplant.com`** (region: US East).
+2. Resend lists DNS records: an `MX` and an SPF `TXT` on `send.ciscorustdeerplant.com`, and a DKIM `TXT` on `resend._domainkey`. Add each one in **Cloudflare → DNS → Records** exactly as shown, with the proxy **off** (gray cloud). **Do not edit or replace the root `@` MX or SPF records; those belong to Zoho.** Wait until Resend shows the domain as **Verified**.
 3. Resend → **API Keys → Create API key**, permission **Sending access**, domain `ciscorustdeerplant.com`.
 4. Cloudflare → **Workers & Pages → ciscorustdeerplant → Settings → Variables and Secrets**, for **Production** (and Preview if you want previews to send too):
    - `RESEND_API_KEY` → **Type: Secret** → the Resend key
@@ -92,9 +102,11 @@ The form posts to `/api/contact`, a Cloudflare Pages Function (`functions/api/co
    - `CONTACT_FROM = "Rust Deer Plant Website <website@ciscorustdeerplant.com>"`
 
    To change where messages go, edit `wrangler.toml` and push. Separate several addresses with commas.
-6. Redeploy (re-run the workflow) so the function picks up the secret, then send a test message from `/contact/`.
+6. Redeploy (re-run the workflow) so the function picks up the secret, then send a test message from `/contact/` and confirm it lands in the Zoho inbox (check Spam the first time). Hitting **Reply** in Zoho goes straight to the visitor, because the function sets `reply_to` to their address.
 
-> **Mailbox for contact@ciscorustdeerplant.com:** that address has to actually receive mail. The simplest free option is **Cloudflare → Email → Email Routing**: create `contact@` and forward it to `rustdeerplant@yahoo.com` (or any inbox the family checks). Email Routing and Resend can both be on the same domain.
+> **Do not turn on Cloudflare Email Routing** for this domain. It replaces the MX records and would take mail away from Zoho.
+>
+> If you'd rather send through Zoho too, Zoho's transactional service **ZeptoMail** has an HTTP API that works the same way; only the `fetch(...)` call in `functions/api/contact.ts` changes.
 
 Never put the Resend key in the code, in `wrangler.toml`, or in GitHub.
 
@@ -114,5 +126,6 @@ To use another provider (Postmark, Mailgun, SendGrid), only the `fetch(...)` cal
 - [ ] **Google Business Profile:** <https://business.google.com> → Edit profile → **Website** → `https://ciscorustdeerplant.com`.
 - [ ] Instagram and TikTok bios: add the link.
 - [ ] Google Search Console: add the domain property (DNS verification works through Cloudflare) and submit `https://ciscorustdeerplant.com/sitemap-index.xml`.
-- [ ] Send a test message through the contact form and confirm it arrives.
+- [ ] Send a test message through the contact form and confirm it arrives in the Zoho inbox for contact@ciscorustdeerplant.com.
+- [ ] Send a normal email to contact@ciscorustdeerplant.com from another account to confirm Zoho still receives mail after the nameserver change.
 - [ ] Check that the map pin lands on the right building. If not, update `geo` in `src/data/business.json`.
